@@ -20,13 +20,13 @@ const settings = [
       router.navigate("/profiles")
     },
   },
-  {
-    text: "Cài Đặt",
-    link: "/settings",
-    handleClick: () => {
-      router.navigate("/settings")
-    },
-  },
+  // {
+  //   text: "Cài Đặt",
+  //   link: "/settings",
+  //   handleClick: () => {
+  //     router.navigate("/settings")
+  //   },
+  // },
   {
     text: "Đăng Xuất",
     link: "/home",

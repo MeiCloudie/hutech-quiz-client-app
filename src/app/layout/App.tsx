@@ -1,10 +1,11 @@
 import "./App.css"
+import Layout from "./components/Layout"
 import ScrollToTopButton from "./components/ScrollToTopButton"
 
 function App() {
   return (
     <div className="App">
-      {/* Layout here! */}
+      <Layout />
       <ScrollToTopButton />
     </div>
   )

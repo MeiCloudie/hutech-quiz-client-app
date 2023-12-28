@@ -57,7 +57,7 @@ export default class UserStore {
       runInAction(() => {
         this.user = user;
       });
-      router.navigate("/classrooms");
+      router.navigate("/rooms");
     } catch (error) {
       console.error("Request error:", error);
       throw error;
@@ -76,7 +76,7 @@ export default class UserStore {
       runInAction(() => {
         this.user = user;
       });
-      router.navigate("/classrooms");
+      router.navigate("/rooms");
     } catch (error) {
       console.error("Request error:", error);
       throw error;

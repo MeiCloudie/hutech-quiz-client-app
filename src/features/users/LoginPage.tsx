@@ -23,9 +23,9 @@ const LoginPage = () => {
           component="img"
           image="logo-hutech-quiz-system.png"
           alt="Ảnh không tồn tại"
-          sx={{ width: 400, height: "auto" }}
+          sx={{ width: 500, height: "auto", mb: "5px" }}
         />
-        <Typography variant="h5" fontWeight={"bold"}>
+        <Typography variant="h5" fontSize={20} fontWeight={"bold"}>
           HỆ THỐNG QUẢN LÝ CÁC BÀI KIỂM TRA TRẮC NGHIỆM
         </Typography>
       </Box>

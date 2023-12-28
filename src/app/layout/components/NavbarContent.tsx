@@ -38,7 +38,7 @@ const NavbarContent = () => {
           textDecoration: "none",
         }}
       >
-        HUTECH CLASSROOM
+        HUTECH QUIZ
       </Typography>
 
       {/* RESPONSIVE */}
@@ -56,7 +56,7 @@ const NavbarContent = () => {
           textDecoration: "none",
         }}
       >
-        HUTECH CLASSROOM
+        HUTECH QUIZ
       </Typography>
       <Box
         sx={{
