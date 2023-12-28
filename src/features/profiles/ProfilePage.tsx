@@ -1,7 +1,12 @@
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 
 const ProfilePage = () => {
-  return <Box sx={{ textAlign: "left" }}>{/* TODO: Content */}</Box>
+  return (
+    <Box sx={{ textAlign: "left" }}>
+      {/* TODO: Content */}
+      <Typography>Profile page</Typography>
+    </Box>
+  )
 }
 
 export default ProfilePage
