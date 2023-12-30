@@ -41,7 +41,7 @@ const Navbar = (props: NavbarProps) => {
   } = useStore()
 
   return (
-    <AppBar position="fixed" open={props.open} sx={{ bgcolor: "#101331" }}>
+    <AppBar position="fixed" open={props.open} sx={{ bgcolor: "#392467" }}>
       <Toolbar>
         {isLoggedIn && (
           <IconButton

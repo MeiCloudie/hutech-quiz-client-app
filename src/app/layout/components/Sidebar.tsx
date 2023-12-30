@@ -95,8 +95,8 @@ const Sidebar = (props: SidebarProps) => {
       open={props.open}
       PaperProps={{
         sx: {
-          backgroundColor: "#ffc80f",
-          color: "#101331",
+          backgroundColor: "#5d3587",
+          color: "#ffd1e3",
         },
       }}
     >
@@ -121,7 +121,7 @@ const Sidebar = (props: SidebarProps) => {
                 justifyContent: props.open ? "initial" : "center",
                 px: 2.5,
                 backgroundColor:
-                  location.pathname === p.link ? "#ffd964" : "inherit",
+                  location.pathname === p.link ? "#a367b1" : "inherit",
               }}
               component={Link}
               to={p.link}
@@ -131,7 +131,7 @@ const Sidebar = (props: SidebarProps) => {
                   minWidth: 0,
                   mr: props.open ? 3 : "auto",
                   justifyContent: "center",
-                  color: "#101331",
+                  color: "#ffd1e3",
                 }}
               >
                 {p.icon}
