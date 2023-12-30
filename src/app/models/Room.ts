@@ -1,5 +1,6 @@
 import Entity, { EntityFormValues } from "../common/models/Entity"
 import Profile from "../common/models/Profile"
+import { Quiz } from "./Quiz"
 import { QuizCollection } from "./QuizCollection"
 import { Record } from "./Record"
 
@@ -11,6 +12,7 @@ export interface Room extends Entity {
 
   owner?: Profile
   users: Profile[]
+  currentQuiz?: Quiz
   quizCollection?: QuizCollection
   records: Record[]
 }
@@ -23,6 +25,7 @@ export class Room implements Room {
 
   owner?: Profile = undefined
   users: Profile[] = []
+  currentQuiz?: Quiz = undefined
   quizCollection?: QuizCollection = undefined
   records: Record[] = []
 
@@ -38,17 +41,13 @@ export class RoomFormValues implements EntityFormValues {
   startedAt: Date = new Date()
 
   ownerId?: string = ""
-  userIds?: string[] = [] 
+  userIds?: string[] = []
+  currentQuizId?: string = ""
   quizCollectionId?: string = ""
 
   constructor(room?: Room) {
     if (room) {
-      const {
-        owner,
-        users,
-        quizCollection,
-        ...rest
-      } = room
+      const { owner, users, currentQuiz, quizCollection, ...rest } = room
       Object.assign(this, { ...rest })
     }
   }
