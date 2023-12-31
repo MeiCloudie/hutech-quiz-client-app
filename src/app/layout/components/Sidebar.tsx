@@ -15,6 +15,7 @@ import ListItemText from "@mui/material/ListItemText"
 
 import HomeIcon from "@mui/icons-material/Home"
 import PersonIcon from "@mui/icons-material/Person"
+import SchoolIcon from '@mui/icons-material/School';
 
 import { Link, useLocation } from "react-router-dom"
 
@@ -77,6 +78,11 @@ const pages = [
     text: "Hồ Sơ",
     link: "/profiles",
     icon: <PersonIcon />,
+  },
+  {
+    text: "Phòng Thi",
+    link: "/rooms",
+    icon: <SchoolIcon />,
   },
   //TODO: Thêm menu ở đây!
 ]

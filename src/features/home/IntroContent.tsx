@@ -41,11 +41,9 @@ const IntroContent = () => {
           component={Link}
           to="/rooms"
         >
-          {/* TODO: Sẽ chỉnh lại sau! */}
-          DANH SÁCH PHÒNG
+          PHÒNG THI
         </Button>
       </Box>
-
       <Divider />
     </React.Fragment>
   )

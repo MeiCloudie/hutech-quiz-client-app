@@ -7,6 +7,9 @@ import NotFound from "../../features/errors/NotFound"
 import ServerError from "../../features/errors/ServerError"
 import TestErrors from "../../features/errors/TestErrors"
 import ProfilePage from "../../features/profiles/ProfilePage"
+import RoomPage from "../../features/rooms/list/RoomPage"
+import RoomDetailsPage from "../../features/rooms/details/RoomDetailsPage"
+import PlayQuizPage from "../../features/rooms/playQuiz/PlayQuizPage"
 
 export const routes: RouteObject[] = [
   {
@@ -23,17 +26,17 @@ export const routes: RouteObject[] = [
           // { path: "helps", element: <HelpPage /> },
           // { path: "links", element: <LinkPage /> },
           // TODO: Chưa có trang quizCollection & histories
-          { path: "rooms", element: <></> },
+          { path: "rooms", element: <RoomPage /> },
           {
             path: "rm/:roomId",
             children: [
               {
                 path: "",
-                element: <></>,
+                element: <RoomDetailsPage />,
               },
               {
-                path: ":quizToQuizCollection",
-                element: <></>,
+                path: "play",
+                element: <PlayQuizPage />,
               },
             ],
           },
