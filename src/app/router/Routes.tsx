@@ -22,6 +22,21 @@ export const routes: RouteObject[] = [
           // { path: "settings", element: <SettingPage /> },
           // { path: "helps", element: <HelpPage /> },
           // { path: "links", element: <LinkPage /> },
+          // TODO: Chưa có trang quizCollection & histories
+          { path: "rooms", element: <></> },
+          {
+            path: "rm/:roomId",
+            children: [
+              {
+                path: "",
+                element: <></>,
+              },
+              {
+                path: ":quizToQuizCollection",
+                element: <></>,
+              },
+            ],
+          },
           { path: "errors", element: <TestErrors /> },
         ],
       },
