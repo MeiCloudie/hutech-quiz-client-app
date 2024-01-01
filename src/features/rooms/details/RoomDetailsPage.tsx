@@ -15,6 +15,8 @@ import { Link, useParams } from "react-router-dom"
 import UserCard from "./UserCard"
 import BallotIcon from "@mui/icons-material/Ballot"
 import { observer } from "mobx-react-lite"
+import Modal from "../../common/UI/Modal"
+import EditRoomForm from "../forms/EditRoomForm"
 
 function RoomDetailsPage() {
   const { roomStore } = useStore()
@@ -54,9 +56,15 @@ function RoomDetailsPage() {
           <Typography variant="h4">{`Bộ đề: ${room.quizCollection?.name}`}</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Button variant="contained" startIcon={<EditIcon />} sx={{ my: 1 }}>
-            CHỈNH SỬA
-          </Button>
+          <Modal
+            startIcon={<EditIcon />}
+            buttonText="CHỈNH SỬA"
+            title="CHỈNH SỬA PHÒNG"
+            subtitle="Hãy chọn 1 bộ đề thi khác:"
+            component={(handleClose) => (
+              <EditRoomForm handleClose={handleClose} />
+            )}
+          />
           {room.isStarted ? (
             <Button
               variant="contained"
@@ -64,6 +72,7 @@ function RoomDetailsPage() {
               component={Link}
               color="error"
               to={`/rm/${roomId}/result`}
+              sx={{ mt: 1 }}
             >
               XEM KẾT QUẢ
             </Button>
@@ -74,6 +83,7 @@ function RoomDetailsPage() {
               startIcon={<PlayCircleFilledIcon />}
               component={Link}
               to={`/rm/${roomId}/play`}
+              sx={{ mt: 1 }}
             >
               BẮT ĐẦU
             </Button>

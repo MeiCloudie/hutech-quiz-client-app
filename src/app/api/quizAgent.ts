@@ -329,6 +329,11 @@ const Groups = {
     requests.post(`v1/Groups/${groupId}/add-leader/${userId}`, {}),
 }
 
+const Rooms = {
+  start: (roomId: string) => requests.patch(`v1/Rooms/${roomId}/start`, {}),
+  stop: (roomId: string) => requests.patch(`v1/Rooms/${roomId}/stop`, {}),
+}
+
 const Account = {
   login: (credentials: LoginFormValues) =>
     requests.post<User>("v1/Account/login", credentials),
@@ -360,6 +365,7 @@ const Results = {
 const quizAgent = {
   Account,
   Results,
+  Rooms,
   Groups,
   createResource,
   createUserResource,
