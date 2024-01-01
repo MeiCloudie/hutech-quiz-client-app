@@ -1,10 +1,11 @@
-import React from 'react'
+import React from "react"
+import RoomList from "./RoomList"
 
-function RoomPage() {
+const RoomPage = () => {
   return (
-    <div>
-      <h1>RoomPage</h1>
-    </div>
+    <React.Fragment>
+      <RoomList />
+    </React.Fragment>
   )
 }
 
