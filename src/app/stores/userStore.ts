@@ -10,6 +10,7 @@ import agent from "../api/agent";
 import { router } from "../router/Routes";
 import { store } from "./store";
 import RoleConstants from "../common/constants/RoleConstants";
+import { toast } from "react-toastify";
 
 export default class UserStore {
   user: User | null = null;
@@ -60,7 +61,7 @@ export default class UserStore {
       router.navigate("/rooms");
     } catch (error) {
       console.error("Request error:", error);
-      throw error;
+      // toast.error("Xác thực thất bại")
     } finally {
       runInAction(() => {
         this.setLoggingIn(false);
@@ -79,7 +80,7 @@ export default class UserStore {
       router.navigate("/rooms");
     } catch (error) {
       console.error("Request error:", error);
-      throw error;
+      // toast.error("Xác thực thất bại")
     } finally {
       this.setRegistering(false);
     }
@@ -100,7 +101,7 @@ export default class UserStore {
       });
     } catch (error) {
       console.error("Request error:", error);
-      throw error;
+      // toast.error("Xác thực thất bại")
     } finally {
       runInAction(() => {
         this.setGettingUser(false);

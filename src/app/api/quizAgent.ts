@@ -32,7 +32,6 @@ const baseUrl = process.env.REACT_APP_HUTECH_QUIZ_BASE_URL
 axios.interceptors.request.use((config) => {
   const token = store.commonStore.token
   if (token && config.headers) config.headers.Authorization = `Bearer ${token}`
-  console.log(config)
   return config
 })
 

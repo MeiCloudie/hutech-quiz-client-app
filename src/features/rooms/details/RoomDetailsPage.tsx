@@ -14,6 +14,7 @@ import { useStore } from "../../../app/stores/store"
 import { Link, useParams } from "react-router-dom"
 import UserCard from "./UserCard"
 import BallotIcon from "@mui/icons-material/Ballot"
+import { observer } from "mobx-react-lite"
 
 function RoomDetailsPage() {
   const { roomStore } = useStore()
@@ -22,7 +23,7 @@ function RoomDetailsPage() {
 
   useEffect(() => {
     if (roomId) {
-      roomStore.get(roomId).then(() => {
+      roomStore.get(roomId, true).then(() => {
         setRoom(roomStore.selectedItem ?? new Room())
       })
     }
@@ -90,4 +91,4 @@ function RoomDetailsPage() {
   )
 }
 
-export default RoomDetailsPage
+export default observer(RoomDetailsPage)
