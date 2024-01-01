@@ -9,7 +9,7 @@ export interface User {
   class: string
   email: string
   faculty?: Faculty
-  roles: string[]
+  roles?: string[]
   token?: string
 }
 
