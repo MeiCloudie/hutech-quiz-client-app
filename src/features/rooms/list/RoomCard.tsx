@@ -4,7 +4,6 @@ import CardMedia from "@mui/material/CardMedia"
 import CardContent from "@mui/material/CardContent"
 import CardActions from "@mui/material/CardActions"
 import Avatar from "@mui/material/Avatar"
-import Typography from "@mui/material/Typography"
 
 import { blue } from "@mui/material/colors"
 
@@ -44,6 +43,7 @@ const RoomCard = (props: RoomCardProps) => {
           </Avatar>
         }
         title={props.room.code}
+        subheader={`Giảng viên: ${props.room.owner?.lastName} ${props.room.owner?.firstName}`}
       />
       <Link to={`/rm/${props.room.id}`} style={{ textDecoration: "none" }}>
         <CardMedia
@@ -52,23 +52,19 @@ const RoomCard = (props: RoomCardProps) => {
           image={"banner-hutech-quiz.png"}
           alt="banner-room"
         />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {`Giảng viên: ${props.room.owner?.lastName} ${props.room.owner?.firstName}`}
-          </Typography>
-        </CardContent>
+        <CardContent></CardContent>
       </Link>
       <Divider />
       <CardActions
         disableSpacing
         sx={{ display: "flex", justifyContent: "space-between" }}
       >
-        <div></div>
         <Button
           variant="contained"
-          startIcon={<ArrowCircleRightIcon />}
+          endIcon={<ArrowCircleRightIcon />}
           component={Link}
           to={`/rm/${props.room.id}`}
+          fullWidth
         >
           VÀO PHÒNG
         </Button>

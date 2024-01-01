@@ -9,7 +9,18 @@ function PlayQuizPage() {
   const renderButtons = (buttonsConfig: { label: string; xs: number }[]) => {
     return buttonsConfig.map((config, index) => (
       <Grid key={index} item xs={config.xs}>
-        <Button variant="contained" fullWidth>
+        <Button
+          variant="contained"
+          sx={{
+            py: 4,
+            fontSize: 40,
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch",
+          }}
+          fullWidth
+        >
           {config.label}
         </Button>
       </Grid>
@@ -34,13 +45,15 @@ function PlayQuizPage() {
     <Box>
       {/* Thoi gian */}
       <Box>
-        <Typography variant="h1">00:30</Typography>
+        <Typography variant="h1" color={"error"} gutterBottom>
+          00:30
+        </Typography>
       </Box>
 
       {/* content (explaination?) */}
       {/* score */}
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Typography variant="h2" fontWeight={"bold"}>
+        <Typography variant="h2" fontWeight={"bold"} gutterBottom>
           Content cau hoi o day ne?
         </Typography>
         <Typography
@@ -49,7 +62,7 @@ function PlayQuizPage() {
         >{`(Điểm: +${"score"})`}</Typography>
       </Box>
 
-      <Divider />
+      <Divider sx={{ my: 4 }} />
       {/* answers[] */}
       <Box>
         <Grid container spacing={2}>

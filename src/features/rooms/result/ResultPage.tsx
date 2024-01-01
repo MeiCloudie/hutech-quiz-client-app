@@ -29,19 +29,31 @@ const rows = [
 function ResultPage() {
   return (
     <Box>
-      <Typography variant="h1" fontWeight={"bold"}>
+      <Typography variant="h2" fontWeight={"bold"} gutterBottom>
         BẢNG KẾT QUẢ
       </Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between", my: 2 }}>
+        <Typography variant="h6">Phòng thi: code123</Typography>
+        <Typography variant="h6">Bộ đề: quizName</Typography>
+        <Typography variant="h6">Người tổ chức: GV. fullname</Typography>
+        <Typography variant="h6">Giờ kiểm tra: startAt</Typography>
+      </Box>
       <Box>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ backgroundColor: "#ffe7f0" }}>
           <Table sx={{ minWidth: 650 }} aria-label="result-table">
             <TableHead>
               <TableRow>
-                <TableCell>Họ tên</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell align="right">Số câu đúng</TableCell>
-                <TableCell align="right">Số câu sai</TableCell>
-                <TableCell align="right">Tổng điểm</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>HỌ TÊN</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>EMAIL</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }} align="right">
+                  SỐ CÂU ĐÚNG
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold" }} align="right">
+                  SỐ CÂU SAI
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold" }} align="right">
+                  TỔNG ĐIỂM
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -54,7 +66,7 @@ function ResultPage() {
                   <TableCell component="th" scope="row">
                     {row.fullName}
                   </TableCell>
-                  <TableCell align="right">{row.email}</TableCell>
+                  <TableCell>{row.email}</TableCell>
                   <TableCell align="right">{row.rightAnswer}</TableCell>
                   <TableCell align="right">{row.wrongAnswer}</TableCell>
                   <TableCell align="right">{row.totalScore}</TableCell>

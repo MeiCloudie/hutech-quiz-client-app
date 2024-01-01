@@ -43,24 +43,27 @@ function RoomDetailsPage() {
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "flex-start",
+            alignItems: "start",
           }}
         >
-          <Typography variant="h4">{`CODE: ${room.code}`}</Typography>
+          <Typography
+            variant="h3"
+            fontWeight={"bold"}
+          >{`CODE: ${room.code}`}</Typography>
           <Typography variant="h4">{`Người tổ chức: GV. ${room.owner?.lastName} ${room.owner?.firstName}`}</Typography>
           <Typography variant="h4">{`Bộ đề: ${room.quizCollection?.name}`}</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Button variant="contained" startIcon={<EditIcon />}>
+          <Button variant="contained" startIcon={<EditIcon />} sx={{ my: 1 }}>
             CHỈNH SỬA
           </Button>
           {room.isStarted ? (
             <Button
               variant="contained"
-              color="success"
               startIcon={<BallotIcon />}
               component={Link}
-              to={`rm/${roomId}/result`}
+              color="error"
+              to={`/rm/${roomId}/result`}
             >
               XEM KẾT QUẢ
             </Button>
@@ -70,21 +73,22 @@ function RoomDetailsPage() {
               color="success"
               startIcon={<PlayCircleFilledIcon />}
               component={Link}
-              to={`rm/${roomId}/play`}
+              to={`/rm/${roomId}/play`}
             >
               BẮT ĐẦU
             </Button>
           )}
         </Box>
       </Box>
-      <Divider />
+      <Divider sx={{ my: 2 }} />
       <Box>
         <Grid container spacing={2}>
-          {room.users && room.users.map((user) => (
-            <Grid item key={user.id} xs={12} sm={6} md={4} lg={3}>
-              <UserCard user={user} />
-            </Grid>
-          ))}
+          {room.users &&
+            room.users.map((user) => (
+              <Grid item key={user.id} xs={12} sm={6} md={4} lg={3}>
+                <UserCard user={user} />
+              </Grid>
+            ))}
         </Grid>
       </Box>
     </Box>
