@@ -26,12 +26,13 @@ import { toast } from "react-toastify"
 import { router } from "../router/Routes"
 // import { Readable } from "stream"
 
-// axios.defaults.baseURL = process.env.REACT_APP_HUTECH_CLASSROOM_BASE_URL
-const baseUrl = process.env.REACT_APP_HUTECH_CLASSROOM_BASE_URL
+// axios.defaults.baseURL = process.env.REACT_APP_HUTECH_QUIZ_BASE_URL
+const baseUrl = process.env.REACT_APP_HUTECH_QUIZ_BASE_URL
 
 axios.interceptors.request.use((config) => {
   const token = store.commonStore.token
   if (token && config.headers) config.headers.Authorization = `Bearer ${token}`
+  console.log(config)
   return config
 })
 
@@ -55,6 +56,8 @@ axios.interceptors.response.use(
   (error: AxiosError) => {
     const response = error.response as AxiosResponse
     const data = error.response?.data as any
+    console.log(error.request)
+    console.log(data)
     switch (response.status) {
       case 400:
         if (data) break
@@ -114,7 +117,7 @@ const requests = {
   delete: <T>(url: string, body: {} = {}) =>
     axios.delete<T>(baseUrl + url, body).then(responseBody),
   patch: <T>(url: string, body: {}) =>
-    axios.patch<T>(url, body).then(responseBody),
+    axios.patch<T>(baseUrl + url, body).then(responseBody),
   uploadFile: <T>(url: string, files: { name: string; blob: Blob }[]) => {
     const data = new FormData()
     files.forEach((element) => {
@@ -357,7 +360,7 @@ const Results = {
   internalServerError: () => requests.get("v1/Results/internal-server-error"),
 }
 
-const agent = {
+const quizAgent = {
   Account,
   Results,
   Groups,
@@ -370,4 +373,4 @@ const agent = {
   createNonEntityHasManyRelationshipResource,
 }
 
-export default agent
+export default quizAgent
