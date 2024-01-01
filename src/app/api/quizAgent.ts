@@ -56,8 +56,6 @@ axios.interceptors.response.use(
   (error: AxiosError) => {
     const response = error.response as AxiosResponse
     const data = error.response?.data as any
-    console.log(error.request)
-    console.log(data)
     switch (response.status) {
       case 400:
         if (data) break

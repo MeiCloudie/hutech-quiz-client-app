@@ -79,7 +79,7 @@ function RoomDetailsPage() {
       <Divider />
       <Box>
         <Grid container spacing={2}>
-          {room.users.map((user) => (
+          {room.users && room.users.map((user) => (
             <Grid item key={user.id} xs={12} sm={6} md={4} lg={3}>
               <UserCard user={user} />
             </Grid>

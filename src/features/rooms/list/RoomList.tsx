@@ -33,16 +33,14 @@ const RoomList = () => {
   } = useStore()
   const [rooms, setRooms] = useState<Room[]>([])
 
-  //TODO: Sửa lại chỗ này
-  // useEffect(() => {
-  //   roomStore
-  //     .loadUserRelatedItems(
-  //       new PaginationParams(1, 10, commonStore.searchString)
-  //     )
-  //     .then(() => {
-  //       // setRooms(roomStore.items)
-  //     })
-  // }, [roomStore, commonStore])
+  useEffect(() => {
+    roomStore
+      .load(
+      )
+      .then(() => {
+        setRooms(roomStore.items)
+      })
+  }, [roomStore])
 
   if (roomStore.isListLoading)
     return (
