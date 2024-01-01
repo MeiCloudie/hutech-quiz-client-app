@@ -1,10 +1,11 @@
-// import { useEffect } from "react"
 import RoomCard from "./RoomCard"
 
 import { Box, Grid, LinearProgress, styled } from "@mui/material"
 import { useStore } from "../../../app/stores/store"
 import { observer } from "mobx-react-lite"
 import PlaceholderBox from "../../common/UI/PlaceholderBox"
+import { Room } from "../../../app/models/Room"
+import { useEffect, useState } from "react"
 // import { PaginationParams } from "../../../app/common/models/paginationPrams"
 
 const ResponsiveGrid = styled(Grid)(({ theme }) => ({
@@ -30,17 +31,18 @@ const RoomList = () => {
     roomStore,
     // commonStore
   } = useStore()
-  // const [rooms, setRooms] = useState<Room[]>([])
+  const [rooms, setRooms] = useState<Room[]>([])
 
-  //   useEffect(() => {
-  //     roomStore
-  //       .loadUserRelatedItems(
-  //         new PaginationParams(1, 10, commonStore.searchString)
-  //       )
-  //       .then(() => {
-  //         // setRooms(roomStore.items)
-  //       })
-  //   }, [roomStore, commonStore])
+  //TODO: Sửa lại chỗ này
+  // useEffect(() => {
+  //   roomStore
+  //     .loadUserRelatedItems(
+  //       new PaginationParams(1, 10, commonStore.searchString)
+  //     )
+  //     .then(() => {
+  //       // setRooms(roomStore.items)
+  //     })
+  // }, [roomStore, commonStore])
 
   if (roomStore.isListLoading)
     return (
@@ -57,9 +59,9 @@ const RoomList = () => {
           subtitle="Hiện tại chưa có phòng thi nào!"
         />
       ) : (
-        roomStore.items.map((c, index) => (
+        roomStore.items.map((r, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-            <RoomCard key={index} room={c} />
+            <RoomCard key={index} room={r} />
           </Grid>
         ))
       )}

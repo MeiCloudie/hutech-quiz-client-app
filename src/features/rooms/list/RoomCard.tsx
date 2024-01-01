@@ -45,7 +45,7 @@ const RoomCard = (props: RoomCardProps) => {
         }
         title={props.room.code}
       />
-      <Link to={`/cr/${props.room.id}`} style={{ textDecoration: "none" }}>
+      <Link to={`/rm/${props.room.id}`} style={{ textDecoration: "none" }}>
         <CardMedia
           component="img"
           height="194"

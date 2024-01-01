@@ -9,7 +9,7 @@ const HomePage = () => {
   const { userStore, roomStore } = useStore()
   useEffect(() => {
     roomStore.load().then(() => {
-      console.log(roomStore.items);
+      console.log(roomStore.items)
     })
   }, [])
   return (
