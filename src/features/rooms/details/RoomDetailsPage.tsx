@@ -11,8 +11,9 @@ import EditIcon from "@mui/icons-material/Edit"
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled"
 import { Room } from "../../../app/models/Room"
 import { useStore } from "../../../app/stores/store"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import UserCard from "./UserCard"
+import BallotIcon from "@mui/icons-material/Ballot"
 
 function RoomDetailsPage() {
   const { roomStore } = useStore()
@@ -44,22 +45,35 @@ function RoomDetailsPage() {
             justifyContent: "flex-start",
           }}
         >
-          <Typography variant="body1">{`CODE: ${room.code}`}</Typography>
-          <Typography variant="body1">{`Người tổ chức: GV. ${room.owner?.lastName} ${room.owner?.firstName}`}</Typography>
-          <Typography variant="body1">{`Bộ đề: ${room.quizCollection?.name}`}</Typography>
+          <Typography variant="h4">{`CODE: ${room.code}`}</Typography>
+          <Typography variant="h4">{`Người tổ chức: GV. ${room.owner?.lastName} ${room.owner?.firstName}`}</Typography>
+          <Typography variant="h4">{`Bộ đề: ${room.quizCollection?.name}`}</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Button variant="contained" startIcon={<EditIcon />}>
             CHỈNH SỬA
           </Button>
-          {/* TODO: isStarted */}
-          <Button
-            variant="contained"
-            color="success"
-            startIcon={<PlayCircleFilledIcon />}
-          >
-            BẮT ĐẦU
-          </Button>
+          {room.isStarted ? (
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<BallotIcon />}
+              component={Link}
+              to={`rm/${roomId}/result`}
+            >
+              XEM KẾT QUẢ
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<PlayCircleFilledIcon />}
+              component={Link}
+              to={`rm/${roomId}/play`}
+            >
+              BẮT ĐẦU
+            </Button>
+          )}
         </Box>
       </Box>
       <Divider />

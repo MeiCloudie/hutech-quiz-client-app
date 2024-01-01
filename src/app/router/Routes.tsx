@@ -10,6 +10,7 @@ import ProfilePage from "../../features/profiles/ProfilePage"
 import RoomPage from "../../features/rooms/list/RoomPage"
 import RoomDetailsPage from "../../features/rooms/details/RoomDetailsPage"
 import PlayQuizPage from "../../features/rooms/playQuiz/PlayQuizPage"
+import ResultPage from "../../features/rooms/result/ResultPage"
 
 export const routes: RouteObject[] = [
   {
@@ -37,6 +38,10 @@ export const routes: RouteObject[] = [
               {
                 path: "play",
                 element: <PlayQuizPage />,
+              },
+              {
+                path: "result",
+                element: <ResultPage />,
               },
             ],
           },
