@@ -4,6 +4,7 @@ import { Socket, io } from "socket.io-client";
 import { store } from "./store";
 import { User } from "../models/User";
 import { Quiz } from "../models/Quiz";
+import { Record } from "../models/Record";
 
 export default class QuizSocketStore {
   socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
@@ -36,9 +37,17 @@ export default class QuizSocketStore {
     this.socket.on("left_room", async (user: User) => {
       await store.roomStore.getByCode(roomCode, true)
     });
+
+    this.socket.on("answered_quiz", async (record: Record) => {
+      console.log(record)
+    })
   };
 
   leaveRoom() {
     this.socket?.emit("leave_room", { roomCode: this.roomCode });
+  }
+
+  answerQuiz(quizId: string, answerId: string) {
+    this.socket?.emit("answer_quiz", { quizId, answerId });
   }
 }
