@@ -7,11 +7,13 @@ import { Quiz } from "../models/Quiz";
 
 export default class QuizSocketStore {
   socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
+  roomCode: string | null = null;
   constructor() {
     makeAutoObservable(this);
   }
 
   createHubConnection = (roomCode: string): void => {
+    this.roomCode = roomCode;
     const hubsUrl = process.env.REACT_APP_HUTECH_QUIZ_HUBS;
     const token = store.commonStore.token;
     this.socket = io(
@@ -34,4 +36,8 @@ export default class QuizSocketStore {
       await store.roomStore.getByCode(roomCode, true);
     });
   };
+
+  leaveRoom() {
+    this.socket?.emit("leave_room", { roomCode: this.roomCode });
+  }
 }

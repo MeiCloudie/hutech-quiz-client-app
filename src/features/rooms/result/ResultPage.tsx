@@ -9,6 +9,8 @@ import {
   TableRow,
   Typography,
 } from "@mui/material"
+import { useStore } from "../../../app/stores/store"
+import { User } from "../../../app/models/User"
 
 function createData(
   fullName: string,
@@ -20,23 +22,24 @@ function createData(
   return { fullName, email, rightAnswer, wrongAnswer, totalScore }
 }
 
-const rows = [
-  createData("John", "john.doe@example.com", 10, 5, 80),
-  createData("Jane", "jane.doe@example.com", 15, 3, 90),
-  createData("Bob", "bob.smith@example.com", 8, 7, 60),
-]
-
 function ResultPage() {
+  const {roomStore} = useStore()
+
+  const getRows = (users: User[]) => [
+    ...users.map((u, index) => ( 
+    createData(`${u.lastName} ${u.firstName}`, u.email, 10, 5, 80)
+    ))
+  ]
+
   return (
     <Box>
       <Typography variant="h2" fontWeight={"bold"} gutterBottom>
         BẢNG KẾT QUẢ
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "space-between", my: 2 }}>
-        <Typography variant="h6">Phòng thi: code123</Typography>
-        <Typography variant="h6">Bộ đề: quizName</Typography>
-        <Typography variant="h6">Người tổ chức: GV. fullname</Typography>
-        <Typography variant="h6">Giờ kiểm tra: startAt</Typography>
+        <Typography variant="h6">Phòng thi: {roomStore.selectedItem?.code || ""}</Typography>
+        <Typography variant="h6">Bộ đề: {roomStore.selectedItem?.quizCollection?.name || ""}</Typography>
+        <Typography variant="h6">Người tổ chức: GV. {roomStore.selectedItem?.owner?.lastName || ""} {roomStore.selectedItem?.owner?.firstName || ""}</Typography>
       </Box>
       <Box>
         <TableContainer component={Paper} sx={{ backgroundColor: "#ffe7f0" }}>
@@ -57,7 +60,7 @@ function ResultPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {roomStore.selectedItem && getRows(roomStore.selectedItem.users).map((row) => (
                 // ! Có thể đổi lại key
                 <TableRow
                   key={row.fullName}

@@ -17,6 +17,7 @@ import BallotIcon from "@mui/icons-material/Ballot";
 import { observer } from "mobx-react-lite";
 import Modal from "../../common/UI/Modal";
 import EditRoomForm from "../forms/EditRoomForm";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function RoomDetailsPage() {
   const { roomStore, quizSocketStore } = useStore();
@@ -27,7 +28,7 @@ function RoomDetailsPage() {
     if (roomId) {
       roomStore.get(roomId, true).then(() => {
         setRoom(roomStore.selectedItem ?? new Room());
-        console.log(roomStore.selectedItem)
+        console.log(roomStore.selectedItem);
         const roomCode = roomStore.selectedItem?.code;
         if (roomCode) quizSocketStore.createHubConnection(roomCode);
       });
@@ -55,7 +56,9 @@ function RoomDetailsPage() {
             variant="h3"
             fontWeight={"bold"}
           >{`CODE: ${room.code}`}</Typography>
-          <Typography variant="h4">{`Người tổ chức: GV. ${room.owner?.lastName || ""} ${room.owner?.firstName || ""}`}</Typography>
+          <Typography variant="h4">{`Người tổ chức: GV. ${
+            room.owner?.lastName || ""
+          } ${room.owner?.firstName || ""}`}</Typography>
           <Typography variant="h4">{`Bộ đề: ${room.quizCollection?.name}`}</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -73,7 +76,7 @@ function RoomDetailsPage() {
               variant="contained"
               startIcon={<BallotIcon />}
               component={Link}
-              color="error"
+              color="info"
               to={`/rm/${roomId}/result`}
               sx={{ mt: 1 }}
             >
@@ -91,6 +94,19 @@ function RoomDetailsPage() {
               BẮT ĐẦU
             </Button>
           )}
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<LogoutIcon />}
+            component={Link}
+            to={`/rooms`}
+            sx={{ mt: 1 }}
+            onClick={() => {
+              quizSocketStore.leaveRoom();
+            }}
+          >
+            RỜI PHÒNG
+          </Button>
         </Box>
       </Box>
       <Divider sx={{ my: 2 }} />
