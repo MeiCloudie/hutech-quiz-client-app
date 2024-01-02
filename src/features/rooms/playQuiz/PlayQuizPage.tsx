@@ -90,8 +90,8 @@ function PlayQuizPage() {
       clearInterval(intervalRef.current);
     };
   }, []);
-  if (!roomStore.selectedItem?.isStarted) {
-    navigator(`/rm/${roomId}`);
+  if (!roomStore.selectedItem?.isStarted && !roomStore.selectedItem?.currentQuiz) {
+    navigator(`/rm/${roomId}/result`);
   }
   if (
     roomStore.isDetailsLoading ||

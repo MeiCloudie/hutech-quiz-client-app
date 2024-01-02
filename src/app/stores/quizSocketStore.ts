@@ -5,6 +5,7 @@ import { store } from "./store";
 import { User } from "../models/User";
 import { Quiz } from "../models/Quiz";
 import { Record } from "../models/Record";
+import { router } from "../router/Routes";
 
 export default class QuizSocketStore {
   socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
@@ -12,7 +13,6 @@ export default class QuizSocketStore {
   constructor() {
     makeAutoObservable(this);
   }
-
   createHubConnection = (roomCode: string): void => {
     this.roomCode = roomCode;
     const hubsUrl = process.env.REACT_APP_HUTECH_QUIZ_HUBS;
@@ -29,12 +29,14 @@ export default class QuizSocketStore {
 
     this.socket.on("loaded_quizzes", (quizzes: Quiz[]) => {
     });
-
     this.socket.on("joined_room", async (user: User) => {
       await store.roomStore.getByCode(roomCode, true)
     });
     this.socket.on("started_room", async (user: User) => {
       await store.roomStore.getByCode(roomCode, true)
+      if (store.roomStore.selectedItem?.currentQuiz) {
+        router.navigate(`/rm/${store.roomStore.selectedItem.id}/play`)
+      }
     });
 
     this.socket.on("left_room", async (user: User) => {

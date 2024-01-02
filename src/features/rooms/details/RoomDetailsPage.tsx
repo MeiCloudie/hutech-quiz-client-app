@@ -18,7 +18,6 @@ import { observer } from "mobx-react-lite";
 import Modal from "../../common/UI/Modal";
 import EditRoomForm from "../forms/EditRoomForm";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { toast } from "react-toastify";
 
 function RoomDetailsPage() {
   const { roomStore, quizSocketStore } = useStore();
