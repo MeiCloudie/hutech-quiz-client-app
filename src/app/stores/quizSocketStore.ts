@@ -24,11 +24,9 @@ export default class QuizSocketStore {
     );
 
     this.socket.on("load_user", async (user: User) => {
-      console.log(user);
     });
 
     this.socket.on("loaded_quizzes", (quizzes: Quiz[]) => {
-      console.log(quizzes);
     });
 
     this.socket.on("joined_room", async (user: User) => {

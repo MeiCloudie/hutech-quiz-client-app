@@ -5,6 +5,7 @@ import { useStore } from "../../../app/stores/store";
 import { useEffect } from "react";
 import { Quiz } from "../../../app/models/Quiz";
 import { useParams } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
 function PlayQuizPage() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -13,13 +14,12 @@ function PlayQuizPage() {
   const { roomStore } = useStore();
 
   useEffect(() => {
-    if (roomId) roomStore.get(roomId).then(() => {
+    if (roomId) roomStore.get(roomId, true).then(() => {
       console.log(roomStore.selectedItem);
-
     });
   }, []);
 
-  if (roomStore.isDetailsLoading)
+  if (roomStore.isDetailsLoading || !roomStore.selectedItem?.currentQuiz?.answers)
     return (
       <Box sx={{ width: "100%" }}>
         <LinearProgress />
@@ -111,6 +111,7 @@ function PlayQuizPage() {
       <Box>
         <Grid container spacing={2}>
           {roomStore.selectedItem?.currentQuiz &&
+          roomStore.selectedItem?.currentQuiz.answers &&
             renderButtons(buttonsConfig(roomStore.selectedItem?.currentQuiz))}
         </Grid>
       </Box>
@@ -118,4 +119,4 @@ function PlayQuizPage() {
   );
 }
 
-export default PlayQuizPage;
+export default observer(PlayQuizPage);

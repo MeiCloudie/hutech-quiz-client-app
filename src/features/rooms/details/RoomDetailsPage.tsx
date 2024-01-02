@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import { Room } from "../../../app/models/Room";
 import { useStore } from "../../../app/stores/store";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import UserCard from "./UserCard";
 import BallotIcon from "@mui/icons-material/Ballot";
 import { observer } from "mobx-react-lite";
@@ -23,10 +23,14 @@ function RoomDetailsPage() {
   const { roomStore, quizSocketStore } = useStore();
   const [room, setRoom] = useState<Room>(new Room());
   const { roomId } = useParams<{ roomId: string }>();
+  const navigator = useNavigate();
 
   useEffect(() => {
     if (roomId) {
       roomStore.get(roomId, true).then(() => {
+        if (roomStore.selectedItem?.isStarted) {
+          navigator(`/rm/${roomId}/play`)
+        }
         setRoom(roomStore.selectedItem ?? new Room());
         console.log(roomStore.selectedItem);
         const roomCode = roomStore.selectedItem?.code;
@@ -71,7 +75,7 @@ function RoomDetailsPage() {
               <EditRoomForm handleClose={handleClose} />
             )}
           />
-          {!roomStore.selectedItem?.isStarted ? (
+          {roomStore.selectedItem?.isStarted ? (
             <Button
               variant="contained"
               startIcon={<BallotIcon />}
