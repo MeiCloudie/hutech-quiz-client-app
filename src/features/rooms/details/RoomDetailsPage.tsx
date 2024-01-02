@@ -97,7 +97,6 @@ function RoomDetailsPage() {
               startIcon={<PlayCircleFilledIcon />}
               component={Link}
               to={`/rm/${roomId}/play`}
-              disabled={!!roomStore.selectedItem?.currentQuiz ?? false}
               sx={{ mt: 1 }}
               onClick={() => {
                 if (roomStore.selectedItem)
