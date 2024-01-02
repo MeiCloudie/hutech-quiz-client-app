@@ -32,8 +32,11 @@ export default class QuizSocketStore {
     });
 
     this.socket.on("joined_room", async (user: User) => {
-      console.log("Someone joined the room" + user);
-      await store.roomStore.getByCode(roomCode, true);
+      await store.roomStore.getByCode(roomCode, true)
+    });
+
+    this.socket.on("left_room", async (user: User) => {
+      await store.roomStore.getByCode(roomCode, true)
     });
   };
 

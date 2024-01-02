@@ -1,12 +1,30 @@
-import { Box, Button, Divider, Grid, Typography } from "@mui/material"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import { useTheme } from "@mui/material/styles"
-import { useStore } from "../../../app/stores/store"
+import { Box, Button, Divider, Grid, LinearProgress, Typography } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import { useStore } from "../../../app/stores/store";
+import { useEffect } from "react";
+import { Quiz } from "../../../app/models/Quiz";
+import { useParams } from "react-router-dom";
 
 function PlayQuizPage() {
-  const theme = useTheme()
-  const isScreenSmall = useMediaQuery(theme.breakpoints.down("sm"))
-  const { roomStore } = useStore()
+  const { roomId } = useParams<{ roomId: string }>();
+  const theme = useTheme();
+  const isScreenSmall = useMediaQuery(theme.breakpoints.down("sm"));
+  const { roomStore } = useStore();
+
+  useEffect(() => {
+    if (roomId) roomStore.get(roomId).then(() => {
+      console.log(roomStore.selectedItem);
+
+    });
+  }, []);
+
+  if (roomStore.isDetailsLoading)
+    return (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    );
 
   const renderButtons = (buttonsConfig: { label: string; xs: number }[]) => {
     return buttonsConfig.map((config, index) => (
@@ -26,46 +44,47 @@ function PlayQuizPage() {
           {config.label}
         </Button>
       </Grid>
-    ))
-  }
+    ));
+  };
 
-  const buttonsConfig = isScreenSmall
-    ? [
-        {
-          label: `A: ${roomStore.selectedItem?.currentQuiz?.answers[0].content}`,
-          xs: 12,
-        },
-        {
-          label: `B: ${roomStore.selectedItem?.currentQuiz?.answers[1].content}`,
-          xs: 12,
-        },
-        {
-          label: `C: ${roomStore.selectedItem?.currentQuiz?.answers[2].content}`,
-          xs: 12,
-        },
-        {
-          label: `D: ${roomStore.selectedItem?.currentQuiz?.answers[3].content}`,
-          xs: 12,
-        },
-      ]
-    : [
-        {
-          label: `A: ${roomStore.selectedItem?.currentQuiz?.answers[0].content}`,
-          xs: 6,
-        },
-        {
-          label: `B: ${roomStore.selectedItem?.currentQuiz?.answers[1].content}`,
-          xs: 6,
-        },
-        {
-          label: `C: ${roomStore.selectedItem?.currentQuiz?.answers[2].content}`,
-          xs: 6,
-        },
-        {
-          label: `D: ${roomStore.selectedItem?.currentQuiz?.answers[3].content}`,
-          xs: 6,
-        },
-      ]
+  const buttonsConfig = (currentQuiz: Quiz) =>
+    isScreenSmall
+      ? [
+          {
+            label: `A: ${currentQuiz.answers[0].content}`,
+            xs: 12,
+          },
+          {
+            label: `B: ${currentQuiz.answers[1].content}`,
+            xs: 12,
+          },
+          {
+            label: `C: ${currentQuiz.answers[2].content}`,
+            xs: 12,
+          },
+          {
+            label: `D: ${currentQuiz.answers[3].content}`,
+            xs: 12,
+          },
+        ]
+      : [
+          {
+            label: `A: ${currentQuiz.answers[0].content}`,
+            xs: 6,
+          },
+          {
+            label: `B: ${currentQuiz.answers[1].content}`,
+            xs: 6,
+          },
+          {
+            label: `C: ${currentQuiz.answers[2].content}`,
+            xs: 6,
+          },
+          {
+            label: `D: ${currentQuiz.answers[3].content}`,
+            xs: 6,
+          },
+        ];
 
   return (
     <Box>
@@ -91,11 +110,12 @@ function PlayQuizPage() {
       {/* answers[] */}
       <Box>
         <Grid container spacing={2}>
-          {renderButtons(buttonsConfig)}
+          {roomStore.selectedItem?.currentQuiz &&
+            renderButtons(buttonsConfig(roomStore.selectedItem?.currentQuiz))}
         </Grid>
       </Box>
     </Box>
-  )
+  );
 }
 
-export default PlayQuizPage
+export default PlayQuizPage;

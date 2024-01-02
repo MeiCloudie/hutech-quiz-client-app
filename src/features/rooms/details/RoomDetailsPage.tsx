@@ -57,8 +57,8 @@ function RoomDetailsPage() {
             fontWeight={"bold"}
           >{`CODE: ${room.code}`}</Typography>
           <Typography variant="h4">{`Người tổ chức: GV. ${
-            room.owner?.lastName || ""
-          } ${room.owner?.firstName || ""}`}</Typography>
+            roomStore.selectedItem?.owner?.lastName || ""
+          } ${roomStore.selectedItem?.owner?.firstName || ""}`}</Typography>
           <Typography variant="h4">{`Bộ đề: ${room.quizCollection?.name}`}</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -71,7 +71,7 @@ function RoomDetailsPage() {
               <EditRoomForm handleClose={handleClose} />
             )}
           />
-          {room.isStarted ? (
+          {!roomStore.selectedItem?.isStarted ? (
             <Button
               variant="contained"
               startIcon={<BallotIcon />}
@@ -112,8 +112,8 @@ function RoomDetailsPage() {
       <Divider sx={{ my: 2 }} />
       <Box>
         <Grid container spacing={2}>
-          {room.users &&
-            room.users.map((user) => (
+          {roomStore.selectedItem?.users &&
+            roomStore.selectedItem?.users.map((user) => (
               <Grid item key={user.id} xs={12} sm={6} md={4} lg={3}>
                 <UserCard user={user} />
               </Grid>
