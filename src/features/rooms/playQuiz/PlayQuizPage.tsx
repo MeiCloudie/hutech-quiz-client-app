@@ -2,7 +2,7 @@ import { Box, Button, Divider, Grid, LinearProgress, Typography } from "@mui/mat
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useStore } from "../../../app/stores/store";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Quiz } from "../../../app/models/Quiz";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
@@ -12,10 +12,47 @@ function PlayQuizPage() {
   const theme = useTheme();
   const isScreenSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const { roomStore } = useStore();
+  const intervalRef = useRef<NodeJS.Timer>();
+  
+  const [days, setDays] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
     if (roomId) roomStore.get(roomId, true).then(() => {
-      console.log(roomStore.selectedItem);
+      
+      
+      clearInterval(intervalRef.current);
+      const interval = setInterval(() => {
+        const now = new Date();
+        if (!roomStore.selectedItem?.startedAt && !roomStore.selectedItem?.startedAt) return;
+        console.log(new Date(roomStore.selectedItem?.startedAt))
+        console.log(now)
+        // ! Check
+        if ((now.getTime() - new Date(roomStore.selectedItem?.startedAt).getTime()) < 30000) return;
+        const difference = 300000000 - (now.getTime() - new Date(roomStore.selectedItem?.startedAt).getTime());
+        console.log(difference)
+        const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+      setDays(d);
+
+      const h = Math.floor(
+        (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      setHours(h);
+
+      const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      setMinutes(m);
+
+      const s = Math.floor((difference % (1000 * 60)) / 1000);
+      setSeconds(s);
+
+      if (d <= 0 && h <= 0 && m <= 0 && s <= 0) {
+        // setPartyTime(true);
+      }
+
+      }, 1000)
+      intervalRef.current = interval;
     });
   }, []);
 
@@ -38,6 +75,9 @@ function PlayQuizPage() {
             display: "flex",
             flexDirection: "column",
             alignItems: "stretch",
+          }}
+          onClick={() => {
+            // ! Add record here
           }}
           fullWidth
         >
@@ -91,7 +131,7 @@ function PlayQuizPage() {
       {/* Thoi gian */}
       <Box>
         <Typography variant="h1" color={"error"} gutterBottom>
-          00:30
+        {minutes !== 0 && `${minutes} : `} {seconds}
         </Typography>
       </Box>
 
