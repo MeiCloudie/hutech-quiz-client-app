@@ -112,7 +112,10 @@ function PlayQuizPage() {
             flexDirection: "column",
             alignItems: "stretch",
           }}
-          disabled={didAnswer}
+          disabled={
+            didAnswer ||
+            userStore.user?.id === roomStore.selectedItem?.owner?.id
+          }
           onClick={() => {
             // ! Add record here
             if (
