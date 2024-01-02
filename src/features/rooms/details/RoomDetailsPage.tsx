@@ -17,7 +17,8 @@ import BallotIcon from "@mui/icons-material/Ballot";
 import { observer } from "mobx-react-lite";
 import Modal from "../../common/UI/Modal";
 import EditRoomForm from "../forms/EditRoomForm";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
+import { toast } from "react-toastify";
 
 function RoomDetailsPage() {
   const { roomStore, quizSocketStore } = useStore();
@@ -28,8 +29,12 @@ function RoomDetailsPage() {
   useEffect(() => {
     if (roomId) {
       roomStore.get(roomId, true).then(() => {
-        if (roomStore.selectedItem?.isStarted) {
-          navigator(`/rm/${roomId}/play`)
+        if (
+          roomStore.selectedItem?.isStarted &&
+          roomStore.selectedItem?.currentQuiz &&
+          roomStore.selectedItem?.currentQuiz.answers
+        ) {
+          navigator(`/rm/${roomId}/play`);
         }
         setRoom(roomStore.selectedItem ?? new Room());
         console.log(roomStore.selectedItem);
@@ -93,7 +98,12 @@ function RoomDetailsPage() {
               startIcon={<PlayCircleFilledIcon />}
               component={Link}
               to={`/rm/${roomId}/play`}
+              disabled={!!roomStore.selectedItem?.currentQuiz ?? false}
               sx={{ mt: 1 }}
+              onClick={() => {
+                if (roomStore.selectedItem)
+                  roomStore.start(roomStore.selectedItem.id);
+              }}
             >
               BẮT ĐẦU
             </Button>

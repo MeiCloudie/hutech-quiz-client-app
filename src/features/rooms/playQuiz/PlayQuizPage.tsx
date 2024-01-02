@@ -102,7 +102,6 @@ function PlayQuizPage() {
           }}
           onClick={() => {
             // ! Add record here
-            console.log('Here')
             if (
               roomStore.selectedItem?.currentQuiz &&
               roomStore.selectedItem?.currentQuiz.answers?.length > index
