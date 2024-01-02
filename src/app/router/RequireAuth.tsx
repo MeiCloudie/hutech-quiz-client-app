@@ -1,7 +1,8 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useStore } from "../stores/store"
+import { observer } from "mobx-react-lite"
 
-export default function RequireAuth() {
+function RequireAuth() {
   const {
     userStore: { isLoggedIn },
   } = useStore()
@@ -17,3 +18,5 @@ export default function RequireAuth() {
     </>
   )
 }
+
+export default observer(RequireAuth)
