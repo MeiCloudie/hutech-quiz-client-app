@@ -37,7 +37,6 @@ function RoomDetailsPage() {
           navigator(`/rm/${roomId}/play`);
         }
         setRoom(roomStore.selectedItem ?? new Room());
-        console.log(roomStore.selectedItem);
         const roomCode = roomStore.selectedItem?.code;
         if (roomCode) quizSocketStore.createHubConnection(roomCode);
       });

@@ -18,8 +18,10 @@ function PlayQuizPage() {
   const { roomId } = useParams<{ roomId: string }>();
   const theme = useTheme();
   const isScreenSmall = useMediaQuery(theme.breakpoints.down("sm"));
-  const { roomStore, quizSocketStore } = useStore();
+  const { roomStore, quizSocketStore, userStore } = useStore();
   const intervalRef = useRef<NodeJS.Timer>();
+
+  const [didAnswer, setDidAnswer] = useState(false);
 
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
@@ -29,6 +31,15 @@ function PlayQuizPage() {
   useEffect(() => {
     if (roomId)
       roomStore.get(roomId, true).then(() => {
+        const currentUser = userStore.user;
+        if (
+          currentUser &&
+          roomStore.selectedItem?.records
+            .filter((x) => x.user)
+            .some((x) => x.user!.id === currentUser.id)
+        ) {
+          setDidAnswer(true);
+        }
         clearInterval(intervalRef.current);
         const interval = setInterval(() => {
           const now = new Date();
@@ -100,6 +111,7 @@ function PlayQuizPage() {
             flexDirection: "column",
             alignItems: "stretch",
           }}
+          disabled={didAnswer}
           onClick={() => {
             // ! Add record here
             if (
@@ -110,6 +122,7 @@ function PlayQuizPage() {
                 roomStore.selectedItem?.currentQuiz?.id,
                 roomStore.selectedItem?.currentQuiz?.answers[index].id
               );
+              setDidAnswer(true);
             }
           }}
           fullWidth
