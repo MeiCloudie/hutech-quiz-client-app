@@ -5,88 +5,89 @@ import {
   Grid,
   LinearProgress,
   Typography,
-} from "@mui/material";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
-import { useStore } from "../../../app/stores/store";
-import { useEffect, useRef, useState } from "react";
-import { Quiz } from "../../../app/models/Quiz";
-import { useParams } from "react-router-dom";
-import { observer } from "mobx-react-lite";
+} from "@mui/material"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import { useTheme } from "@mui/material/styles"
+import { useStore } from "../../../app/stores/store"
+import { useEffect, useRef, useState } from "react"
+import { Quiz } from "../../../app/models/Quiz"
+import { useParams } from "react-router-dom"
+import { observer } from "mobx-react-lite"
+import StartIcon from "@mui/icons-material/Start"
 
 function PlayQuizPage() {
-  const { roomId } = useParams<{ roomId: string }>();
-  const theme = useTheme();
-  const isScreenSmall = useMediaQuery(theme.breakpoints.down("sm"));
-  const { roomStore, quizSocketStore, userStore } = useStore();
-  const intervalRef = useRef<NodeJS.Timer>();
+  const { roomId } = useParams<{ roomId: string }>()
+  const theme = useTheme()
+  const isScreenSmall = useMediaQuery(theme.breakpoints.down("sm"))
+  const { roomStore, quizSocketStore, userStore } = useStore()
+  const intervalRef = useRef<NodeJS.Timer>()
 
-  const [didAnswer, setDidAnswer] = useState(false);
+  const [didAnswer, setDidAnswer] = useState(false)
 
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const [days, setDays] = useState(0)
+  const [hours, setHours] = useState(0)
+  const [minutes, setMinutes] = useState(0)
+  const [seconds, setSeconds] = useState(0)
 
   useEffect(() => {
     if (roomId)
       roomStore.get(roomId, true).then(() => {
-        const currentUser = userStore.user;
+        const currentUser = userStore.user
         if (
           currentUser &&
           roomStore.selectedItem?.records
             .filter((x) => x.user)
             .some((x) => x.user!.id === currentUser.id)
         ) {
-          setDidAnswer(true);
+          setDidAnswer(true)
         }
-        clearInterval(intervalRef.current);
+        clearInterval(intervalRef.current)
         const interval = setInterval(() => {
-          const now = new Date();
+          const now = new Date()
           if (
             !roomStore.selectedItem?.startedAt &&
             !roomStore.selectedItem?.startedAt
           )
-            return;
-          console.log(new Date(roomStore.selectedItem?.startedAt));
-          console.log(now);
+            return
+          console.log(new Date(roomStore.selectedItem?.startedAt))
+          console.log(now)
           // ! Check
           if (
             now.getTime() -
               new Date(roomStore.selectedItem?.startedAt).getTime() <
             30000
           )
-            return;
+            return
           const difference =
             300000000 -
             (now.getTime() -
-              new Date(roomStore.selectedItem?.startedAt).getTime());
-          console.log(difference);
-          const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-          setDays(d);
+              new Date(roomStore.selectedItem?.startedAt).getTime())
+          console.log(difference)
+          const d = Math.floor(difference / (1000 * 60 * 60 * 24))
+          setDays(d)
 
           const h = Math.floor(
             (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-          );
-          setHours(h);
+          )
+          setHours(h)
 
-          const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-          setMinutes(m);
+          const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+          setMinutes(m)
 
-          const s = Math.floor((difference % (1000 * 60)) / 1000);
-          setSeconds(s);
+          const s = Math.floor((difference % (1000 * 60)) / 1000)
+          setSeconds(s)
 
           if (d <= 0 && h <= 0 && m <= 0 && s <= 0) {
             // setPartyTime(true);
           }
-        }, 1000);
-        intervalRef.current = interval;
-      });
+        }, 1000)
+        intervalRef.current = interval
+      })
 
     return () => {
-      clearInterval(intervalRef.current);
-    };
-  }, []);
+      clearInterval(intervalRef.current)
+    }
+  }, [])
 
   if (
     roomStore.isDetailsLoading ||
@@ -96,7 +97,7 @@ function PlayQuizPage() {
       <Box sx={{ width: "100%" }}>
         <LinearProgress />
       </Box>
-    );
+    )
 
   const renderButtons = (buttonsConfig: { label: string; xs: number }[]) => {
     return buttonsConfig.map((config, index) => (
@@ -121,8 +122,8 @@ function PlayQuizPage() {
               quizSocketStore.answerQuiz(
                 roomStore.selectedItem?.currentQuiz?.id,
                 roomStore.selectedItem?.currentQuiz?.answers[index].id
-              );
-              setDidAnswer(true);
+              )
+              setDidAnswer(true)
             }
           }}
           fullWidth
@@ -130,8 +131,8 @@ function PlayQuizPage() {
           {config.label}
         </Button>
       </Grid>
-    ));
-  };
+    ))
+  }
 
   const buttonsConfig = (currentQuiz: Quiz) =>
     isScreenSmall
@@ -170,16 +171,30 @@ function PlayQuizPage() {
             label: `D: ${currentQuiz.answers[3].content}`,
             xs: 6,
           },
-        ];
+        ]
 
   return (
     <Box>
       {/* Thoi gian */}
-      <Box>
+      {/* <Box>
         <Typography variant="h1" color={"error"} gutterBottom>
           {minutes !== 0 && `${minutes} : `} {seconds}
         </Typography>
-      </Box>
+      </Box> */}
+      {userStore.user?.id === roomStore.selectedItem.owner?.id && (
+        <Box sx={{ my: 4 }}>
+          <Button
+            variant="contained"
+            color="warning"
+            endIcon={<StartIcon />}
+            size="large"
+            sx={{ fontSize: 20 }}
+            onClick={() => {}}
+          >
+            CHUYỂN CÂU TIẾP THEO
+          </Button>
+        </Box>
+      )}
 
       {/* content (explaination?) */}
       {/* score */}
@@ -202,7 +217,7 @@ function PlayQuizPage() {
         </Grid>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default observer(PlayQuizPage);
+export default observer(PlayQuizPage)
