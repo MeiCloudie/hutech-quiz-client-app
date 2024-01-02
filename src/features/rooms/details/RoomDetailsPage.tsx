@@ -5,38 +5,41 @@ import {
   Grid,
   LinearProgress,
   Typography,
-} from "@mui/material"
-import React, { useEffect, useState } from "react"
-import EditIcon from "@mui/icons-material/Edit"
-import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled"
-import { Room } from "../../../app/models/Room"
-import { useStore } from "../../../app/stores/store"
-import { Link, useParams } from "react-router-dom"
-import UserCard from "./UserCard"
-import BallotIcon from "@mui/icons-material/Ballot"
-import { observer } from "mobx-react-lite"
-import Modal from "../../common/UI/Modal"
-import EditRoomForm from "../forms/EditRoomForm"
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
+import { Room } from "../../../app/models/Room";
+import { useStore } from "../../../app/stores/store";
+import { Link, useParams } from "react-router-dom";
+import UserCard from "./UserCard";
+import BallotIcon from "@mui/icons-material/Ballot";
+import { observer } from "mobx-react-lite";
+import Modal from "../../common/UI/Modal";
+import EditRoomForm from "../forms/EditRoomForm";
 
 function RoomDetailsPage() {
-  const { roomStore } = useStore()
-  const [room, setRoom] = useState<Room>(new Room())
-  const { roomId } = useParams<{ roomId: string }>()
+  const { roomStore, quizSocketStore } = useStore();
+  const [room, setRoom] = useState<Room>(new Room());
+  const { roomId } = useParams<{ roomId: string }>();
 
   useEffect(() => {
     if (roomId) {
       roomStore.get(roomId, true).then(() => {
-        setRoom(roomStore.selectedItem ?? new Room())
-      })
+        setRoom(roomStore.selectedItem ?? new Room());
+        console.log(roomStore.selectedItem)
+        const roomCode = roomStore.selectedItem?.code;
+        if (roomCode) quizSocketStore.createHubConnection(roomCode);
+      });
     }
-  }, [roomId, roomStore])
+  }, [roomId, roomStore]);
 
   if (roomStore.isDetailsLoading)
     return (
       <Box sx={{ width: "100%" }}>
         <LinearProgress />
       </Box>
-    )
+    );
 
   return (
     <Box>
@@ -52,7 +55,7 @@ function RoomDetailsPage() {
             variant="h3"
             fontWeight={"bold"}
           >{`CODE: ${room.code}`}</Typography>
-          <Typography variant="h4">{`Người tổ chức: GV. ${room.owner?.lastName} ${room.owner?.firstName}`}</Typography>
+          <Typography variant="h4">{`Người tổ chức: GV. ${room.owner?.lastName || ""} ${room.owner?.firstName || ""}`}</Typography>
           <Typography variant="h4">{`Bộ đề: ${room.quizCollection?.name}`}</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -102,7 +105,7 @@ function RoomDetailsPage() {
         </Grid>
       </Box>
     </Box>
-  )
+  );
 }
 
-export default observer(RoomDetailsPage)
+export default observer(RoomDetailsPage);

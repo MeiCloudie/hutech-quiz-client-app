@@ -24,6 +24,7 @@ import {
 } from "./baseResource"
 import { toast } from "react-toastify"
 import { router } from "../router/Routes"
+import { Room } from "../models/Room"
 // import { Readable } from "stream"
 
 // axios.defaults.baseURL = process.env.REACT_APP_HUTECH_QUIZ_BASE_URL
@@ -330,6 +331,7 @@ const Groups = {
 }
 
 const Rooms = {
+  getByCode: (roomCode: string) => requests.get<Room>(`v1/Rooms/Code/${roomCode}`),
   start: (roomId: string) => requests.patch(`v1/Rooms/${roomId}/start`, {}),
   stop: (roomId: string) => requests.patch(`v1/Rooms/${roomId}/stop`, {}),
 }

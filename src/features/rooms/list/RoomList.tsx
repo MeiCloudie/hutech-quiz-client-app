@@ -38,6 +38,7 @@ const RoomList = () => {
       .load(
       )
       .then(() => {
+        console.log(roomStore.items)
         setRooms(roomStore.items)
       })
   }, [roomStore])

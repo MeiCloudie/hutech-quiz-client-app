@@ -10,6 +10,8 @@ import dayjsPluginUTC from 'dayjs/plugin/utc'
 console.log(process.env.REACT_APP_HUTECH_CLASSROOM_BASE_URL)
 console.log(process.env.REACT_APP_HUTECH_CLASSROOM_HUBS)
 console.log(process.env.REACT_APP_TINYMCE_API_KEY)
+console.log(process.env.REACT_APP_HUTECH_QUIZ_BASE_URL)
+console.log(process.env.REACT_APP_HUTECH_QUIZ_HUBS)
 dayjs.extend(dayjsPluginUTC)
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -43,7 +43,7 @@ const RoomCard = (props: RoomCardProps) => {
           </Avatar>
         }
         title={props.room.code}
-        subheader={`Giảng viên: ${props.room.owner?.lastName} ${props.room.owner?.firstName}`}
+        subheader={`Giảng viên: ${props.room.owner?.lastName || ""} ${props.room.owner?.firstName || ""}`}
       />
       <Link to={`/rm/${props.room.id}`} style={{ textDecoration: "none" }}>
         <CardMedia
