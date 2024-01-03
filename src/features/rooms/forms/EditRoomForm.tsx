@@ -69,7 +69,10 @@ const EditRoomForm: React.FC<EditRoomFormProps> = (
         const createRoomFormValues = new RoomFormValues();
         createRoomFormValues.code = values.roomCode;
         createRoomFormValues.quizCollectionId = values.quizCollectionId;
-        roomStore.update(roomId, createRoomFormValues).then(props.handleClose);
+        roomStore.update(roomId, createRoomFormValues).then(() => {
+          toast.success('Đã cập nhật thông tin phòng. Vui lòng tải lại trang!')
+          props.handleClose()
+        });
       } else {
         toast.error("Không thấy id của phòng!");
       }

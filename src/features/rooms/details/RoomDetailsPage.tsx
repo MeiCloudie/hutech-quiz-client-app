@@ -44,10 +44,6 @@ function RoomDetailsPage() {
     }
   }, [roomId, roomStore]);
 
-  const handleClose = () => {
-    
-  }
-
   if (roomStore.isDetailsLoading)
     return (
       <Box sx={{ width: "100%" }}>
@@ -80,7 +76,7 @@ function RoomDetailsPage() {
             buttonText="CHỈNH SỬA"
             title="CHỈNH SỬA PHÒNG"
             subtitle="Hãy chọn 1 bộ đề thi khác:"
-            component={() => (
+            component={(handleClose) => (
               <EditRoomForm room={roomStore.selectedItem} handleClose={handleClose} />
             )}
           />
