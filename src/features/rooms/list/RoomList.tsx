@@ -31,15 +31,15 @@ const RoomList = () => {
     roomStore,
     // commonStore
   } = useStore()
-  const [rooms, setRooms] = useState<Room[]>([])
+  // const [rooms, setRooms] = useState<Room[]>([])
 
   useEffect(() => {
     roomStore
       .load(
       )
       .then(() => {
-        console.log(roomStore.items)
-        setRooms(roomStore.items)
+        // console.log(roomStore.items)
+        // setRooms(roomStore.items)
       })
   }, [roomStore])
 

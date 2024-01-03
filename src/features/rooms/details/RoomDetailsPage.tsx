@@ -42,6 +42,10 @@ function RoomDetailsPage() {
     }
   }, [roomId, roomStore]);
 
+  const handleClose = () => {
+    
+  }
+
   if (roomStore.isDetailsLoading)
     return (
       <Box sx={{ width: "100%" }}>
@@ -62,7 +66,7 @@ function RoomDetailsPage() {
           <Typography
             variant="h3"
             fontWeight={"bold"}
-          >{`CODE: ${room.code}`}</Typography>
+          >{`CODE: ${roomStore.selectedItem?.code}`}</Typography>
           <Typography variant="h4">{`Người tổ chức: GV. ${
             roomStore.selectedItem?.owner?.lastName || ""
           } ${roomStore.selectedItem?.owner?.firstName || ""}`}</Typography>
@@ -74,8 +78,8 @@ function RoomDetailsPage() {
             buttonText="CHỈNH SỬA"
             title="CHỈNH SỬA PHÒNG"
             subtitle="Hãy chọn 1 bộ đề thi khác:"
-            component={(handleClose) => (
-              <EditRoomForm handleClose={handleClose} />
+            component={() => (
+              <EditRoomForm room={roomStore.selectedItem} handleClose={handleClose} />
             )}
           />
           {roomStore.selectedItem?.isStarted ? (

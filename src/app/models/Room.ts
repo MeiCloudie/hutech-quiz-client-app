@@ -47,7 +47,7 @@ export class RoomFormValues implements EntityFormValues {
 
   constructor(room?: Room) {
     if (room) {
-      const { owner, users, currentQuiz, quizCollection, ...rest } = room
+      const { owner, users, currentQuiz, quizCollection, records, ...rest } = room
       Object.assign(this, { ...rest })
     }
   }
