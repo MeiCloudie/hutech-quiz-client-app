@@ -36,7 +36,7 @@ export class Room implements Room {
 
 export class RoomFormValues implements EntityFormValues {
   id?: string = undefined
-  code: string = "="
+  code: string = ""
   isStarted: boolean = false
   startedAt: Date = new Date()
 

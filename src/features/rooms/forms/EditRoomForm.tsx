@@ -6,6 +6,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -14,34 +15,32 @@ import { QuizCollectionFormValues } from "../../../app/models/QuizCollection";
 import { Room, RoomFormValues } from "../../../app/models/Room";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { observer } from "mobx-react-lite";
 
 interface EditRoomFormProps {
   handleClose: () => void;
   room?: Room;
 }
 
-const EditRoomForm: React.FC<EditRoomFormProps> = (props: EditRoomFormProps) => {
+const EditRoomForm: React.FC<EditRoomFormProps> = (
+  props: EditRoomFormProps
+) => {
   const { roomId } = useParams<{
     roomId: string;
   }>();
   const { roomStore, quizCollectionStore } = useStore();
   // Mock data for quiz collection names
   // const quizCollectionNames = []
-  const [roomFormValues, setRoomFormValues] =
-    useState<RoomFormValues>(new RoomFormValues());
 
   useEffect(() => {
     // if (room) setRoomFormValues(new RoomFormValues(room));
     // else if (roomId)
     //   roomStore.get(roomId).then(() => {
     //     if (roomStore.selectedItem) {
-          
+
     //     }
     //   });
-    quizCollectionStore.load().then(() => {
-      console.log(new RoomFormValues(props.room))
-      setRoomFormValues(new RoomFormValues(props.room));
-    })
+    quizCollectionStore.load().then(() => {});
   }, []);
 
   // Validation schema using Yup
@@ -52,25 +51,27 @@ const EditRoomForm: React.FC<EditRoomFormProps> = (props: EditRoomFormProps) => 
 
   // Formik setup with default value for quizCollection
   const formik = useFormik({
-    initialValues: roomFormValues,
+    initialValues: {
+      quizCollectionId: "",
+      roomCode: roomStore.selectedItem?.code ?? ""
+    },
     validationSchema: validationSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => { 
+    onSubmit: async (values) => {
       // console.log(values)
       // Your form submission logic here
-      
-      if (roomFormValues.id && roomId) {
-        const roomFormValuesId = roomFormValues.id;
-        const { id, userIds, currentQuizId, ownerId, ...rest } = roomFormValues;
-        console.log(rest)
+
+      if (props.room && roomId) {
         // roomFormValues.id = undefined;
         console.log("Form submitted with values:", values);
 
         // ! Cannot update
-        await roomStore.update(roomId, rest);
-      }
-      else {
-        toast.error("Không thấy id của phòng!")
+        const createRoomFormValues = new RoomFormValues();
+        createRoomFormValues.code = values.roomCode;
+        createRoomFormValues.quizCollectionId = values.quizCollectionId;
+        roomStore.update(roomId, createRoomFormValues).then(props.handleClose);
+      } else {
+        toast.error("Không thấy id của phòng!");
       }
 
       // After handling the submission, close the form
@@ -82,7 +83,19 @@ const EditRoomForm: React.FC<EditRoomFormProps> = (props: EditRoomFormProps) => 
     <Box>
       <form onSubmit={formik.handleSubmit}>
         <FormControl fullWidth variant="outlined" margin="normal">
-          <InputLabel htmlFor="quiz-collection">Chọn Bộ Đề Thi</InputLabel>
+          <TextField
+            label="CODE phòng thi"
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            id="roomCode"
+            name="roomCode"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.roomCode}
+            error={formik.touched.roomCode && Boolean(formik.errors.roomCode)}
+            helperText={formik.touched.roomCode && formik.errors.roomCode}
+          />
           <Select
             label="Chọn Bộ Đề Thi"
             id="quiz-collection"
@@ -114,4 +127,4 @@ const EditRoomForm: React.FC<EditRoomFormProps> = (props: EditRoomFormProps) => 
   );
 };
 
-export default EditRoomForm;
+export default observer(EditRoomForm);
