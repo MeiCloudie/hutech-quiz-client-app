@@ -35,11 +35,13 @@ function PlayQuizPage() {
     if (roomId)
       roomStore.get(roomId, true).then(() => {
         const currentUser = userStore.user;
+        const currentQuiz = roomStore.selectedItem?.currentQuiz;
         if (
           currentUser &&
+          currentQuiz &&
           roomStore.selectedItem?.records
             .filter((x) => x.user)
-            .some((x) => x.user!.id === currentUser.id)
+            .some((x) => x.user!.id === currentUser.id && x.quiz?.id == currentQuiz.id )
         ) {
           setDidAnswer(true);
         }

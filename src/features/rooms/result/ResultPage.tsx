@@ -9,12 +9,12 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from "@mui/material"
-import { useStore } from "../../../app/stores/store"
-import { Record } from "../../../app/models/Record"
-import { useEffect, useState } from "react"
-import { Room } from "../../../app/models/Room"
-import { useParams } from "react-router-dom"
+} from "@mui/material";
+import { useStore } from "../../../app/stores/store";
+import { Record } from "../../../app/models/Record";
+import { useEffect, useState } from "react";
+import { Room } from "../../../app/models/Room";
+import { useParams } from "react-router-dom";
 
 function createData(
   fullName: string,
@@ -23,45 +23,54 @@ function createData(
   wrongAnswer: number,
   totalScore: number
 ) {
-  return { fullName, email, rightAnswer, wrongAnswer, totalScore }
+  return { fullName, email, rightAnswer, wrongAnswer, totalScore };
 }
 
 function ResultPage() {
-  const { roomStore, quizSocketStore } = useStore()
-  const [room, setRoom] = useState<Room>(new Room())
-  const { roomId } = useParams<{ roomId: string }>()
+  const { roomStore, quizSocketStore } = useStore();
+  const [room, setRoom] = useState<Room>(new Room());
+  const { roomId } = useParams<{ roomId: string }>();
 
   useEffect(() => {
     if (roomId) {
       roomStore.get(roomId, true).then(() => {
-        setRoom(roomStore.selectedItem ?? new Room())
-        console.log(roomStore.selectedItem)
-        const roomCode = roomStore.selectedItem?.code
-        if (roomCode) quizSocketStore.createHubConnection(roomCode)
-      })
+        setRoom(roomStore.selectedItem ?? new Room());
+        console.log(roomStore.selectedItem);
+        const roomCode = roomStore.selectedItem?.code;
+        if (roomCode) quizSocketStore.createHubConnection(roomCode);
+      });
     }
-  }, [roomId, roomStore])
+  }, [roomId, roomStore]);
 
   if (roomStore.isDetailsLoading)
     return (
       <Box sx={{ width: "100%" }}>
         <LinearProgress />
       </Box>
-    )
+    );
 
   const getRows = (records: Record[] | undefined) => {
-    if (!records) return []
+    if (!records) return [];
 
-    return records.map((r, index) =>
-      createData(
-        `${r.user?.lastName} ${r.user?.firstName}`,
-        r.user?.email || "",
-        10,
-        5,
-        80
-      )
-    )
-  }
+    const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
+      arr.reduce((groups, item) => {
+        (groups[key(item)] ||= []).push(item);
+        return groups;
+      }, {} as any);
+
+    const userRegistry = groupBy([...records], (x) => x.user?.id ?? x.id);
+
+    return Object.keys(userRegistry).map((key, i) => {
+      const records = userRegistry[key] as Record[];
+      return createData(
+        `${records[0].user?.lastName} ${records[0].user?.firstName}`,
+        records[0].user?.email || "",
+        records.filter((x) => x.answer?.isCorrect).length,
+        records.filter((x) => !x.answer?.isCorrect).length,
+        records.reduce((acc, currentValue) => acc + (currentValue?.quiz?.score ?? 0), 0)
+      );
+    });
+  };
 
   return (
     <Box>
@@ -118,7 +127,7 @@ function ResultPage() {
         </TableContainer>
       </Box>
     </Box>
-  )
+  );
 }
 
-export default ResultPage
+export default ResultPage;
