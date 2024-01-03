@@ -59,14 +59,15 @@ const EditRoomForm: React.FC<EditRoomFormProps> = (props: EditRoomFormProps) => 
       // console.log(values)
       // Your form submission logic here
       
-      if (roomFormValues.id) {
-        const id = roomFormValues.id;
-        const { quizCollectionId, code, isStarted, startedAt } = roomFormValues;
+      if (roomFormValues.id && roomId) {
+        const roomFormValuesId = roomFormValues.id;
+        const { id, userIds, currentQuizId, ownerId, ...rest } = roomFormValues;
+        console.log(rest)
         // roomFormValues.id = undefined;
         console.log("Form submitted with values:", values);
 
         // ! Cannot update
-        await roomStore.update(id, {code, isStarted, startedAt, quizCollectionId,  });
+        await roomStore.update(roomId, rest);
       }
       else {
         toast.error("Không thấy id của phòng!")
