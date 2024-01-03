@@ -67,7 +67,7 @@ function ResultPage() {
         records[0].user?.email || "",
         records.filter((x) => x.answer?.isCorrect).length,
         records.filter((x) => !x.answer?.isCorrect).length,
-        records.reduce((acc, currentValue) => acc + (currentValue?.quiz?.score ?? 0), 0)
+        records.reduce((acc, currentValue) => acc + (currentValue.answer?.isCorrect ? currentValue?.quiz?.score ?? 0 : 0), 0)
       );
     });
   };

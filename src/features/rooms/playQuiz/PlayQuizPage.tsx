@@ -34,65 +34,81 @@ function PlayQuizPage() {
   useEffect(() => {
     if (roomId)
       roomStore.get(roomId, true).then(() => {
+        setDidAnswer(false);
         const currentUser = userStore.user;
         const currentQuiz = roomStore.selectedItem?.currentQuiz;
+        const roomId = roomStore.selectedItem?.id;
         if (
           currentUser &&
           currentQuiz &&
+          roomId &&
           roomStore.selectedItem?.records
             .filter((x) => x.user)
-            .some((x) => x.user!.id === currentUser.id && x.quiz?.id == currentQuiz.id )
+            .some(
+              (x) =>
+                x.user!.id === currentUser.id &&
+                x.quiz?.id == currentQuiz.id &&
+                x.room?.id == roomId
+            )
         ) {
+          console.log('You already answered!')
+          console.log(roomStore.selectedItem.records)
           setDidAnswer(true);
+        } else {
+          console.log('You did not answer!')
+          setDidAnswer(false);
         }
-        clearInterval(intervalRef.current);
-        const interval = setInterval(() => {
-          const now = new Date();
-          if (
-            !roomStore.selectedItem?.startedAt &&
-            !roomStore.selectedItem?.startedAt
-          )
-            return;
-          console.log(new Date(roomStore.selectedItem?.startedAt));
-          console.log(now);
-          // ! Check
-          if (
-            now.getTime() -
-              new Date(roomStore.selectedItem?.startedAt).getTime() <
-            30000
-          )
-            return;
-          const difference =
-            300000000 -
-            (now.getTime() -
-              new Date(roomStore.selectedItem?.startedAt).getTime());
-          console.log(difference);
-          const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-          setDays(d);
+        // clearInterval(intervalRef.current);
+        // const interval = setInterval(() => {
+        //   const now = new Date();
+        //   if (
+        //     !roomStore.selectedItem?.startedAt &&
+        //     !roomStore.selectedItem?.startedAt
+        //   )
+        //     return;
+        //   console.log(new Date(roomStore.selectedItem?.startedAt));
+        //   console.log(now);
+        //   // ! Check
+        //   if (
+        //     now.getTime() -
+        //       new Date(roomStore.selectedItem?.startedAt).getTime() <
+        //     30000
+        //   )
+        //     return;
+        //   const difference =
+        //     300000000 -
+        //     (now.getTime() -
+        //       new Date(roomStore.selectedItem?.startedAt).getTime());
+        //   console.log(difference);
+        //   const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+        //   setDays(d);
 
-          const h = Math.floor(
-            (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-          );
-          setHours(h);
+        //   const h = Math.floor(
+        //     (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        //   );
+        //   setHours(h);
 
-          const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-          setMinutes(m);
+        //   const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        //   setMinutes(m);
 
-          const s = Math.floor((difference % (1000 * 60)) / 1000);
-          setSeconds(s);
+        //   const s = Math.floor((difference % (1000 * 60)) / 1000);
+        //   setSeconds(s);
 
-          if (d <= 0 && h <= 0 && m <= 0 && s <= 0) {
-            // setPartyTime(true);
-          }
-        }, 1000);
-        intervalRef.current = interval;
+        //   if (d <= 0 && h <= 0 && m <= 0 && s <= 0) {
+        //     // setPartyTime(true);
+        //   }
+        // }, 1000);
+        // intervalRef.current = interval;
       });
 
     return () => {
       clearInterval(intervalRef.current);
     };
   }, []);
-  if (!roomStore.selectedItem?.isStarted && !roomStore.selectedItem?.currentQuiz) {
+  if (
+    !roomStore.selectedItem?.isStarted &&
+    !roomStore.selectedItem?.currentQuiz
+  ) {
     navigator(`/rm/${roomId}/result`);
   }
   if (
