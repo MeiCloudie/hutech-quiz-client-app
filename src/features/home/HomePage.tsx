@@ -8,9 +8,8 @@ import { useEffect } from "react"
 const HomePage = () => {
   const { userStore, roomStore } = useStore()
   useEffect(() => {
-    roomStore.load().then(() => {
-      console.log(roomStore.items)
-    })
+    // roomStore.load().then(() => {
+    // })
   }, [])
   return (
     <Box sx={{ textAlign: "left" }}>

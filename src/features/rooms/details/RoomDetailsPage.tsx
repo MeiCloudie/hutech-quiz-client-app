@@ -37,7 +37,9 @@ function RoomDetailsPage() {
         }
         setRoom(roomStore.selectedItem ?? new Room());
         const roomCode = roomStore.selectedItem?.code;
-        if (roomCode) quizSocketStore.createHubConnection(roomCode);
+        if (roomCode) {
+          quizSocketStore.createHubConnection(roomCode);
+        }
       });
     }
   }, [roomId, roomStore]);

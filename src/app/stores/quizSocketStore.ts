@@ -10,9 +10,14 @@ import { router } from "../router/Routes";
 export default class QuizSocketStore {
   socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
   roomCode: string | null = null;
+  doNeedReload: boolean = true
   constructor() {
     makeAutoObservable(this);
   }
+  setDoNeedReload(value: boolean) {
+    this.doNeedReload = value
+  }
+
   createHubConnection = (roomCode: string): void => {
     this.roomCode = roomCode;
     const hubsUrl = process.env.REACT_APP_HUTECH_QUIZ_HUBS;
@@ -30,23 +35,34 @@ export default class QuizSocketStore {
     this.socket.on("loaded_quizzes", (quizzes: Quiz[]) => {
     });
     this.socket.on("joined_room", async (user: User) => {
-      await store.roomStore.getByCode(roomCode, true)
+      if (this.doNeedReload)
+        await store.roomStore.getByCode(roomCode, true)
     });
     this.socket.on("started_room", async (user: User) => {
-      await store.roomStore.getByCode(roomCode, true)
-      if (store.roomStore.selectedItem?.currentQuiz) {
-        router.navigate(`/rm/${store.roomStore.selectedItem.id}/play`)
+      if (this.doNeedReload) {
+        await store.roomStore.getByCode(roomCode, true)
+        if (store.roomStore.selectedItem?.currentQuiz) {
+          router.navigate(`/rm/${store.roomStore.selectedItem.id}/play`)
+        }
       }
     });
 
     this.socket.on("left_room", async (user: User) => {
-      await store.roomStore.getByCode(roomCode, true)
+      if (this.doNeedReload) {
+        await store.roomStore.getByCode(roomCode, true)
+      }
     });
 
     this.socket.on("answered_quiz", async (record: Record) => {
       console.log(record)
     })
+
+    this.setDoNeedReload(true)
   };
+
+  stopHubConnection = () : void => {
+    this.socket?.disconnect()
+}
 
   leaveRoom() {
     this.socket?.emit("leave_room", { roomCode: this.roomCode });
