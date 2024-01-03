@@ -32,9 +32,12 @@ function PlayQuizPage() {
   const navigator = useNavigate();
 
   useEffect(() => {
+    setDidAnswer(false)
+  }, [roomStore.selectedItem?.currentQuiz?.id])
+
+  useEffect(() => {
     if (roomId)
       roomStore.get(roomId, true).then(() => {
-        setDidAnswer(false);
         const currentUser = userStore.user;
         const currentQuiz = roomStore.selectedItem?.currentQuiz;
         const roomId = roomStore.selectedItem?.id;
@@ -105,6 +108,8 @@ function PlayQuizPage() {
       clearInterval(intervalRef.current);
     };
   }, []);
+
+  
   if (
     !roomStore.selectedItem?.isStarted &&
     !roomStore.selectedItem?.currentQuiz
