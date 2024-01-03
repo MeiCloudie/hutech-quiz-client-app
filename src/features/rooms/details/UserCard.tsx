@@ -34,7 +34,7 @@ function UserCard(props: UserCardProps) {
           />
         }
         title={`${props.user.lastName} ${props.user.firstName}`}
-        subheader={props.user.email}
+        subheader={props.user.userName}
       />
     </Card>
   )

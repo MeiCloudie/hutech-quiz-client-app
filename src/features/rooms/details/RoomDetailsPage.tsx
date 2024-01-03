@@ -20,8 +20,7 @@ import EditRoomForm from "../forms/EditRoomForm";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 function RoomDetailsPage() {
-  const { roomStore, quizSocketStore } = useStore();
-  const [room, setRoom] = useState<Room>(new Room());
+  const { roomStore, quizSocketStore, userStore } = useStore();
   const { roomId } = useParams<{ roomId: string }>();
   const navigator = useNavigate();
 
@@ -35,7 +34,6 @@ function RoomDetailsPage() {
         ) {
           navigator(`/rm/${roomId}/play`);
         }
-        setRoom(roomStore.selectedItem ?? new Room());
         const roomCode = roomStore.selectedItem?.code;
         if (roomCode) {
           quizSocketStore.createHubConnection(roomCode);
@@ -68,30 +66,37 @@ function RoomDetailsPage() {
           <Typography variant="h4">{`Người tổ chức: GV. ${
             roomStore.selectedItem?.owner?.lastName || ""
           } ${roomStore.selectedItem?.owner?.firstName || ""}`}</Typography>
-          <Typography variant="h4">{`Bộ đề: ${room.quizCollection?.name}`}</Typography>
+          <Typography variant="h4">{`Bộ đề: ${roomStore.selectedItem?.quizCollection?.name}`}</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Modal
-            startIcon={<EditIcon />}
-            buttonText="CHỈNH SỬA"
-            title="CHỈNH SỬA PHÒNG"
-            subtitle="Hãy chọn 1 bộ đề thi khác:"
-            component={(handleClose) => (
-              <EditRoomForm room={roomStore.selectedItem} handleClose={handleClose} />
+          {userStore.user?.id === roomStore.selectedItem?.owner?.id && (
+            <Modal
+              startIcon={<EditIcon />}
+              buttonText="CHỈNH SỬA"
+              title="CHỈNH SỬA PHÒNG"
+              subtitle="Hãy chọn 1 bộ đề thi khác:"
+              component={(handleClose) => (
+                <EditRoomForm
+                  room={roomStore.selectedItem}
+                  handleClose={handleClose}
+                />
+              )}
+            />
+          )}
+          {roomStore.selectedItem && !roomStore.selectedItem.isStarted &&
+            roomStore.selectedItem.records.length > 0 && (
+              <Button
+                variant="contained"
+                startIcon={<BallotIcon />}
+                component={Link}
+                color="info"
+                to={`/rm/${roomId}/result`}
+                sx={{ mt: 1 }}
+              >
+                XEM KẾT QUẢ
+              </Button>
             )}
-          />
-          {roomStore.selectedItem?.isStarted ? (
-            <Button
-              variant="contained"
-              startIcon={<BallotIcon />}
-              component={Link}
-              color="info"
-              to={`/rm/${roomId}/result`}
-              sx={{ mt: 1 }}
-            >
-              XEM KẾT QUẢ
-            </Button>
-          ) : (
+          {userStore.user?.id === roomStore.selectedItem?.owner?.id && (
             <Button
               variant="contained"
               color="success"

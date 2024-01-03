@@ -52,7 +52,7 @@ const EditRoomForm: React.FC<EditRoomFormProps> = (
   // Formik setup with default value for quizCollection
   const formik = useFormik({
     initialValues: {
-      quizCollectionId: "",
+      quizCollectionId: roomStore.selectedItem?.quizCollection?.id,
       roomCode: roomStore.selectedItem?.code ?? ""
     },
     validationSchema: validationSchema,
