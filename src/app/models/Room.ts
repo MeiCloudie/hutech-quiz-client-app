@@ -35,14 +35,14 @@ export class Room implements Room {
 }
 
 export class RoomFormValues implements EntityFormValues {
-  id?: string = ""
-  code: string = ""
+  id?: string = undefined
+  code: string = "="
   isStarted: boolean = false
   startedAt: Date = new Date()
 
-  ownerId?: string = ""
-  userIds?: string[] = []
-  currentQuizId?: string = ""
+  ownerId?: string = undefined
+  userIds?: string[] = undefined
+  currentQuizId?: string = undefined
   quizCollectionId?: string = ""
 
   constructor(room?: Room) {
