@@ -6,7 +6,6 @@ import { User } from "../models/User";
 import { Quiz } from "../models/Quiz";
 import { Record } from "../models/Record";
 import { router } from "../router/Routes";
-import { toast } from "react-toastify";
 
 export default class QuizSocketStore {
   socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
@@ -38,7 +37,7 @@ export default class QuizSocketStore {
     this.socket.on("joined_room", async (user: User) => {
       if (this.doNeedReload)
         await store.roomStore.getByCode(roomCode, true)
-      toast.warn(`Người dùng ${user.lastName} ${user.firstName} tham gia` );
+      // toast.warn(`Người dùng ${user.lastName} ${user.firstName} tham gia` );
     });
     this.socket.on("started_room", async (user: User) => {
       if (this.doNeedReload) {

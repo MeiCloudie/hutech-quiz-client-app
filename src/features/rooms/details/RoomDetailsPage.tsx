@@ -6,10 +6,9 @@ import {
   LinearProgress,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
-import { Room } from "../../../app/models/Room";
 import { useStore } from "../../../app/stores/store";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import UserCard from "./UserCard";
@@ -40,7 +39,7 @@ function RoomDetailsPage() {
         }
       });
     }
-  }, [roomId, roomStore]);
+  }, [roomId, roomStore, quizSocketStore, navigator]);
 
   if (roomStore.isDetailsLoading)
     return (

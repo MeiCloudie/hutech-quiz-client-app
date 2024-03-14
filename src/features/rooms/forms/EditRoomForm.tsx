@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
   FormControl,
-  InputLabel,
   MenuItem,
   Select,
   TextField,
@@ -11,7 +10,6 @@ import {
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useStore } from "../../../app/stores/store";
-import { QuizCollectionFormValues } from "../../../app/models/QuizCollection";
 import { Room, RoomFormValues } from "../../../app/models/Room";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -41,7 +39,7 @@ const EditRoomForm: React.FC<EditRoomFormProps> = (
     //     }
     //   });
     quizCollectionStore.load().then(() => {});
-  }, []);
+  }, [quizCollectionStore]);
 
   // Validation schema using Yup
   const validationSchema = yup.object({
