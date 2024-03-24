@@ -9,7 +9,7 @@ import {
 } from "@mui/material"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as yup from "yup"
-import QuizData from "../QuizData"
+import QuizData from "./QuizData"
 
 interface GenerateQuizFormProps {}
 

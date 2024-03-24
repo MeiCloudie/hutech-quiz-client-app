@@ -8,7 +8,6 @@ import {
   InputLabel,
   Select,
   TextField,
-  Button,
 } from "@mui/material"
 import React from "react"
 import { Field, Form, Formik } from "formik"
@@ -140,7 +139,6 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
                       </React.Fragment>
                     ))}
                   </Grid>
-                  
                 </Form>
               )}
             </Formik>
