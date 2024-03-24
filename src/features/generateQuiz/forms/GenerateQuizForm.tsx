@@ -1,5 +1,12 @@
 import React, { useState } from "react"
-import { TextField, Button, Typography, Container, Grid } from "@mui/material"
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  Grid,
+  CircularProgress,
+} from "@mui/material"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as yup from "yup"
 
@@ -7,6 +14,7 @@ interface GenerateQuizFormProps {}
 
 const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
   const [quizData, setQuizData] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const validationSchema = yup.object({
     topic: yup
@@ -25,6 +33,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
   })
 
   const handleSubmit = async (values: any) => {
+    setIsLoading(true) // Bắt đầu hiển thị loading và disable button
     try {
       const response = await fetch("http://localhost:3001/api/v1/generate", {
         method: "POST",
@@ -42,13 +51,18 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
       setQuizData(data)
     } catch (error) {
       console.error("There was an error!", error)
+    } finally {
+      setIsLoading(false) // Kết thúc loading và enable button sau khi response
     }
   }
 
   return (
     <Container>
-      <Typography variant="h5" align="center" gutterBottom>
-        Form Generate Quiz
+      <Typography variant="h4" align="center" fontWeight={"bold"}>
+        BIỂU MẪU
+      </Typography>
+      <Typography variant="h6" align="center" gutterBottom>
+        GENERATE QUIZ FORM
       </Typography>
       <Formik
         initialValues={{
@@ -60,14 +74,14 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, resetForm }) => (
           <Form>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Field
                   as={TextField}
                   name="topic"
-                  label="Topic"
+                  label="Nội dung chủ đề"
                   variant="outlined"
                   fullWidth
                   error={touched.topic && !!errors.topic}
@@ -79,7 +93,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
                   as={TextField}
                   type="number"
                   name="quizCount"
-                  label="Quiz Count"
+                  label="Số lượng câu hỏi"
                   variant="outlined"
                   fullWidth
                   error={touched.quizCount && !!errors.quizCount}
@@ -91,7 +105,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
                   as={TextField}
                   type="number"
                   name="answerCount"
-                  label="Answer Count"
+                  label="Số lượng câu trả lời / 1 câu hỏi"
                   variant="outlined"
                   fullWidth
                   error={touched.answerCount && !!errors.answerCount}
@@ -102,7 +116,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
                 <Field
                   as={TextField}
                   name="correctAnswerText"
-                  label="Correct Answer Text"
+                  label="Số lượng câu trả lời đúng / tổng câu trả lời"
                   variant="outlined"
                   fullWidth
                   error={
@@ -112,9 +126,38 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Submit
-                </Button>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      disabled={isLoading}
+                      sx={{ mr: 1 }}
+                    >
+                      XÁC NHẬN
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="error"
+                      onClick={() => resetForm()}
+                      disabled={isLoading}
+                    >
+                      HUỶ
+                    </Button>
+                  </div>
+                  {isLoading && (
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <CircularProgress size={24} sx={{ mr: 1 }} />
+                      <Typography>
+                        Đang phát sinh đề thi. Hãy chờ chút nhé!
+                      </Typography>
+                    </div>
+                  )}
+                </div>
               </Grid>
             </Grid>
           </Form>
