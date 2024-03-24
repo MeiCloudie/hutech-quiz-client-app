@@ -9,6 +9,7 @@ import {
 } from "@mui/material"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as yup from "yup"
+import QuizData from "../QuizData"
 
 interface GenerateQuizFormProps {}
 
@@ -33,7 +34,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
   })
 
   const handleSubmit = async (values: any) => {
-    setIsLoading(true) // Bắt đầu hiển thị loading và disable button
+    setIsLoading(true)
     try {
       const response = await fetch("http://localhost:3001/api/v1/generate", {
         method: "POST",
@@ -52,7 +53,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
     } catch (error) {
       console.error("There was an error!", error)
     } finally {
-      setIsLoading(false) // Kết thúc loading và enable button sau khi response
+      setIsLoading(false)
     }
   }
 
@@ -164,22 +165,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
         )}
       </Formik>
       {/* Hiển thị dữ liệu quiz */}
-      <div>
-        {quizData.map((quiz, index) => (
-          <div key={index}>
-            <p>{quiz.content}</p>
-            <p>{quiz.explaination}</p>
-            <ul>
-              {quiz.answers.map((answer: any, i: number) => (
-                <li key={i}>
-                  {answer.content} -{" "}
-                  {answer.isCorrect ? "Correct" : "Incorrect"}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
+      <QuizData quizData={quizData} />
     </Container>
   )
 }
