@@ -11,6 +11,7 @@ import RoomPage from "../../features/rooms/list/RoomPage"
 import RoomDetailsPage from "../../features/rooms/details/RoomDetailsPage"
 import PlayQuizPage from "../../features/rooms/playQuiz/PlayQuizPage"
 import ResultPage from "../../features/rooms/result/ResultPage"
+import GenerateQuizPage from "../../features/generateQuiz/GenerateQuizPage"
 
 export const routes: RouteObject[] = [
   {
@@ -45,6 +46,7 @@ export const routes: RouteObject[] = [
               },
             ],
           },
+          { path: "generatequiz", element: <GenerateQuizPage /> },
           { path: "errors", element: <TestErrors /> },
         ],
       },
