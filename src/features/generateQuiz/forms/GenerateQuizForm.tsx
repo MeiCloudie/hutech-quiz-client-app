@@ -1,15 +1,12 @@
-import React from "react"
+import React, { useState } from "react"
 import { TextField, Button, Typography, Container, Grid } from "@mui/material"
 import { Formik, Form, Field, ErrorMessage } from "formik"
-import { useFormik } from "formik"
 import * as yup from "yup"
 
-interface GenerateQuizFormProps {
-  //   handleClose: () => void
-}
+interface GenerateQuizFormProps {}
 
 const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
-  //store
+  const [quizData, setQuizData] = useState<any[]>([])
 
   const validationSchema = yup.object({
     topic: yup
@@ -27,21 +24,26 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
     correctAnswerText: yup.string().required("Không được để trống!"),
   })
 
-  const formik = useFormik({
-    initialValues: {},
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log("GenerateQuiz Form submitted with values:", values)
+  const handleSubmit = async (values: any) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/v1/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
 
-      //TODO: Handle submit
-      //   const createRoomFormValues = new RoomFormValues()
-      //   createRoomFormValues.quizCollectionId = values.quizCollectionId
-      //   createRoomFormValues.ownerId = userStore.user?.id
-      //   roomStore.create(createRoomFormValues).then(handleClose)
+      if (!response.ok) {
+        throw new Error("Network response was not ok")
+      }
 
-      //   handleClose()
-    },
-  })
+      const data = await response.json()
+      setQuizData(data)
+    } catch (error) {
+      console.error("There was an error!", error)
+    }
+  }
 
   return (
     <Container>
@@ -56,9 +58,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
           correctAnswerText: "",
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          console.log(values)
-        }}
+        onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
           <Form>
@@ -120,6 +120,23 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
           </Form>
         )}
       </Formik>
+      {/* Hiển thị dữ liệu quiz */}
+      <div>
+        {quizData.map((quiz, index) => (
+          <div key={index}>
+            <p>{quiz.content}</p>
+            <p>{quiz.explaination}</p>
+            <ul>
+              {quiz.answers.map((answer: any, i: number) => (
+                <li key={i}>
+                  {answer.content} -{" "}
+                  {answer.isCorrect ? "Correct" : "Incorrect"}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </Container>
   )
 }
