@@ -84,6 +84,8 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
                   name="topic"
                   label="Nội dung chủ đề"
                   variant="outlined"
+                  multiline
+                  rows={3}
                   fullWidth
                   error={touched.topic && !!errors.topic}
                   helperText={<ErrorMessage name="topic" />}
@@ -164,6 +166,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
           </Form>
         )}
       </Formik>
+
       {/* Hiển thị dữ liệu quiz */}
       <QuizData quizData={quizData} />
     </Container>
