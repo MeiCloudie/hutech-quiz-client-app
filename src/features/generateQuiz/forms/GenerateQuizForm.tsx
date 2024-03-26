@@ -16,6 +16,7 @@ interface GenerateQuizFormProps {}
 const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
   const [quizData, setQuizData] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   const validationSchema = yup.object({
     topic: yup
@@ -50,6 +51,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
 
       const data = await response.json()
       setQuizData(data)
+      setIsLoaded(true)
     } catch (error) {
       console.error("There was an error!", error)
     } finally {
@@ -163,12 +165,12 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
                 </div>
               </Grid>
             </Grid>
+            {/* Hiển thị dữ liệu quiz */}
+            {isLoaded && <QuizData quizData={quizData} />}
           </Form>
         )}
       </Formik>
 
-      {/* Hiển thị dữ liệu quiz */}
-      <QuizData quizData={quizData} />
     </Container>
   )
 }

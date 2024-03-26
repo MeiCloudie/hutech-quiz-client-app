@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {
   Box,
   Divider,
@@ -11,7 +11,7 @@ import {
   TextField,
   Button,
 } from "@mui/material"
-import { Field, Form, Formik, FormikProps } from "formik"
+import { Field, Form, Formik } from "formik"
 import * as yup from "yup"
 
 interface QuizDataProps {
@@ -30,12 +30,21 @@ const validationSchema = yup.object({
 })
 
 const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
-  const handleSubmit = (values: any) => {
-    console.log(values)
-    // Thực hiện xử lý dữ liệu ở đây
+  const [quizCollectionTemp, setQuizCollectionTemp] = useState<any[]>(quizData)
+
+  const updateQuizAtIndex = (index: number, newQuiz: any) => {
+    setQuizCollectionTemp((prevState) => {
+      const updatedQuizCollection = [...prevState]
+      updatedQuizCollection[index] = newQuiz
+      console.log(updatedQuizCollection)
+      return updatedQuizCollection
+    })
   }
 
-  const onSubmitArray: ((values: any) => void)[] = []
+  const handleQuizCollectionTemp = () => {
+    console.log("Collection:")
+    console.log(quizCollectionTemp)
+  }
 
   return (
     <Box>
@@ -46,14 +55,7 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
             <Typography variant="h4" align="center" fontWeight={"bold"}>
               KẾT QUẢ{" "}
             </Typography>
-            <Button
-              variant="contained"
-              onClick={() =>
-                onSubmitArray.forEach((submit, index) =>
-                  submit(quizData[index])
-                )
-              }
-            >
+            <Button variant="contained" onClick={handleQuizCollectionTemp}>
               TẠO ĐỀ THI
             </Button>
           </Box>
@@ -61,11 +63,6 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
       )}
       <Box>
         {quizData.map((quiz, index) => {
-          const onSubmit = (values: any) => {
-            handleSubmit(values)
-          }
-          onSubmitArray.push(onSubmit)
-
           return (
             <div key={index}>
               <Typography
@@ -86,9 +83,11 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
                   })),
                 }}
                 validationSchema={validationSchema}
-                onSubmit={onSubmit}
+                onSubmit={(values, { setSubmitting }) => {
+                  updateQuizAtIndex(index, values)
+                }}
               >
-                {({ errors, touched }) => (
+                {({ errors, touched, resetForm, isSubmitting }) => (
                   <Form>
                     <Field
                       as={TextField}
@@ -157,6 +156,31 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
                         </React.Fragment>
                       ))}
                     </Grid>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          sx={{ mr: 1 }}
+                        >
+                          CẬP NHẬT
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="contained"
+                          color="error"
+                          onClick={() => resetForm()}
+                        >
+                          HUỶ
+                        </Button>
+                      </div>
+                    </div>
                   </Form>
                 )}
               </Formik>
