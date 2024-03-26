@@ -31,6 +31,9 @@ const validationSchema = yup.object({
 
 const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
   const [quizCollectionTemp, setQuizCollectionTemp] = useState<any[]>(quizData)
+  const [updateSuccess, setUpdateSuccess] = useState<boolean[]>(
+    Array(quizData.length).fill(false)
+  )
 
   const updateQuizAtIndex = (index: number, newQuiz: any) => {
     setQuizCollectionTemp((prevState) => {
@@ -38,6 +41,11 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
       updatedQuizCollection[index] = newQuiz
       console.log(updatedQuizCollection)
       return updatedQuizCollection
+    })
+    setUpdateSuccess((prevState) => {
+      const updatedSuccess = [...prevState]
+      updatedSuccess[index] = true
+      return updatedSuccess
     })
   }
 
@@ -51,7 +59,13 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
       {quizData.length > 0 && (
         <>
           <Divider sx={{ my: 2 }} />
-          <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              mb: 2,
+            }}
+          >
             <Typography variant="h4" align="center" fontWeight={"bold"}>
               KẾT QUẢ{" "}
             </Typography>
@@ -160,6 +174,7 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
+                        alignItems: "center",
                       }}
                     >
                       <div>
@@ -171,6 +186,7 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
                         >
                           CẬP NHẬT
                         </Button>
+
                         <Button
                           type="button"
                           variant="contained"
@@ -180,6 +196,17 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
                           HUỶ
                         </Button>
                       </div>
+                      {updateSuccess[index] && (
+                        <div>
+                          <Typography
+                            variant="subtitle1"
+                            color="primary"
+                            fontWeight={"bold"}
+                          >
+                            Đã cập nhật thành công câu {index + 1}!
+                          </Typography>
+                        </div>
+                      )}
                     </div>
                   </Form>
                 )}
