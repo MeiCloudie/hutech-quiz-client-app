@@ -13,6 +13,8 @@ import {
 } from "@mui/material"
 import { Field, Form, Formik } from "formik"
 import * as yup from "yup"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 interface QuizDataProps {
   quizData: any[]
@@ -31,22 +33,14 @@ const validationSchema = yup.object({
 
 const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
   const [quizCollectionTemp, setQuizCollectionTemp] = useState<any[]>(quizData)
-  const [updateSuccess, setUpdateSuccess] = useState<boolean[]>(
-    Array(quizData.length).fill(false)
-  )
 
   const updateQuizAtIndex = (index: number, newQuiz: any) => {
     setQuizCollectionTemp((prevState) => {
       const updatedQuizCollection = [...prevState]
       updatedQuizCollection[index] = newQuiz
-      console.log(updatedQuizCollection)
       return updatedQuizCollection
     })
-    setUpdateSuccess((prevState) => {
-      const updatedSuccess = [...prevState]
-      updatedSuccess[index] = true
-      return updatedSuccess
-    })
+    toast.success(`Đã cập nhật thành công câu ${index + 1}!`)
   }
 
   const handleQuizCollectionTemp = () => {
@@ -173,40 +167,25 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
                     <div
                       style={{
                         display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        marginTop: 4,
                       }}
                     >
-                      <div>
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          color="primary"
-                          sx={{ mr: 1 }}
-                        >
-                          CẬP NHẬT
-                        </Button>
-
-                        <Button
-                          type="button"
-                          variant="contained"
-                          color="error"
-                          onClick={() => resetForm()}
-                        >
-                          HUỶ
-                        </Button>
-                      </div>
-                      {updateSuccess[index] && (
-                        <div>
-                          <Typography
-                            variant="subtitle1"
-                            color="primary"
-                            fontWeight={"bold"}
-                          >
-                            Đã cập nhật thành công câu {index + 1}!
-                          </Typography>
-                        </div>
-                      )}
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        sx={{ mr: 1 }}
+                      >
+                        CẬP NHẬT
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="contained"
+                        color="error"
+                        onClick={() => resetForm()}
+                      >
+                        HUỶ
+                      </Button>
                     </div>
                   </Form>
                 )}
