@@ -36,6 +36,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
 
   const handleSubmit = async (values: any) => {
     setIsLoading(true)
+    setIsLoaded(false)
     try {
       const response = await fetch("http://localhost:3001/api/v1/generate", {
         method: "POST",
@@ -170,7 +171,6 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
           </Form>
         )}
       </Formik>
-
     </Container>
   )
 }

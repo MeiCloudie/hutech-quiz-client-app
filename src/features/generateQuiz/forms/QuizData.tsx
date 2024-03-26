@@ -83,7 +83,7 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
                   })),
                 }}
                 validationSchema={validationSchema}
-                onSubmit={(values, { setSubmitting }) => {
+                onSubmit={(values) => {
                   updateQuizAtIndex(index, values)
                 }}
               >
