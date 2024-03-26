@@ -166,11 +166,11 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
                 </div>
               </Grid>
             </Grid>
-            {/* Hiển thị dữ liệu quiz */}
-            {isLoaded && <QuizData quizData={quizData} />}
           </Form>
         )}
       </Formik>
+      {/* Hiển thị dữ liệu quiz  */}
+      {isLoaded && <QuizData quizData={quizData} />}
     </Container>
   )
 }

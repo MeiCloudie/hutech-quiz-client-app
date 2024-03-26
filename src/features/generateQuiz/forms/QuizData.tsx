@@ -87,7 +87,7 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
                   updateQuizAtIndex(index, values)
                 }}
               >
-                {({ errors, touched, resetForm, isSubmitting }) => (
+                {({ errors, touched, resetForm }) => (
                   <Form>
                     <Field
                       as={TextField}
