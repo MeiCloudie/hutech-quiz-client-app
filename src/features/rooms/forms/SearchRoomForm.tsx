@@ -14,7 +14,7 @@ const validationSchema = yup.object({
   roomCode: yup
     .string()
     .required("Hãy nhập code của phòng thi!")
-    .matches(/^\d{1,6}$/, "Mã code phòng có tối đa 6 kí tự!"),
+    .matches(/^[a-zA-Z0-9]{1,6}$/, "Mã code phòng có tối đa 6 kí tự!"),
 })
 
 const initialValues = {
@@ -22,9 +22,8 @@ const initialValues = {
 }
 
 const SearchRoomForm: React.FC<SearchRoomFormProps> = ({ handleClose }) => {
-
   const { roomStore } = useStore()
-  const navigator = useNavigate();
+  const navigator = useNavigate()
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -33,11 +32,10 @@ const SearchRoomForm: React.FC<SearchRoomFormProps> = ({ handleClose }) => {
       // For example, you can make an API call or perform other operations
       console.log("Form submitted with values:", values)
 
-      const room = roomStore.items.find(x => x.code == values.roomCode);
-        if (room) {
-          navigator(`/rm/${room.id}`)
-      }
-      else {
+      const room = roomStore.items.find((x) => x.code == values.roomCode)
+      if (room) {
+        navigator(`/rm/${room.id}`)
+      } else {
         toast.error("Không tìm thấy phòng!")
       }
 
