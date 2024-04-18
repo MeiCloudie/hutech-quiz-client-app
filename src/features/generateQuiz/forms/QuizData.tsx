@@ -156,8 +156,8 @@ const QuizData: React.FC<QuizDataProps> = ({ quizData }) => {
                                   answer.isCorrect ? "correct" : "incorrect"
                                 }
                               >
-                                <MenuItem value="correct">Correct</MenuItem>
-                                <MenuItem value="incorrect">Incorrect</MenuItem>
+                                <MenuItem value="correct">Đúng</MenuItem>
+                                <MenuItem value="incorrect">Sai</MenuItem>
                               </Field>
                             </Field>
                           </Grid>
