@@ -38,7 +38,7 @@ const GenerateQuizForm: React.FC<GenerateQuizFormProps> = () => {
     setIsLoading(true)
     setIsLoaded(false)
     try {
-      const response = await fetch("http://localhost:3001/api/v1/generate", {
+      const response = await fetch(process.env.REACT_APP_HUTECH_QUIZ_BASE_URL + "v1/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
